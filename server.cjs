@@ -16,13 +16,20 @@ const MIME = {
   '.exe': 'application/octet-stream',
   '.bat': 'text/plain',
   '.ps1': 'text/plain',
-  '.sha256': 'text/plain'
+  '.sha256': 'text/plain',
+  '.gguf': 'application/octet-stream'
 };
 
 const server = http.createServer((req, res) => {
   let reqPath = decodeURI(req.url.split('?')[0]);
   if (reqPath === '/') reqPath = '/index.html';
-  const filePath = path.join(ROOT, reqPath);
+  
+  let filePath;
+  if (reqPath.startsWith('/models/')) {
+    filePath = path.join(ROOT, '..', 'desktop', reqPath);
+  } else {
+    filePath = path.join(ROOT, reqPath);
+  }
 
   fs.stat(filePath, (err, stats) => {
     if (err || !stats.isFile()) {
