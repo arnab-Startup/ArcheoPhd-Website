@@ -324,7 +324,7 @@ function initFAQAccordion() {
 function initModalHandlers() {
   const modalTriggers = document.querySelectorAll('[data-modal-target]');
   const modalOverlays = document.querySelectorAll('.modal-overlay');
-  const modalCloses = document.querySelectorAll('.modal-close');
+  const modalCloses = document.querySelectorAll('.modal-close, [data-modal-close]');
 
   modalTriggers.forEach(btn => {
     btn.addEventListener('click', (e) => {
