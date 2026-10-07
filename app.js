@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFAQAccordion();
   initModalHandlers();
   initCopyButtons();
+  initStickyCta();
 });
 
 // --------------------------------------------------------------------------
@@ -190,23 +191,19 @@ function initHardwareCalculator() {
 // 4. Live Radiocarbon (C-14) IntCal20 Calibration Engine
 // --------------------------------------------------------------------------
 function initRadiocarbonLab() {
-  const form = document.getElementById('c14-form');
-  const bpInput = document.getElementById('c14-bp');
-  const errorInput = document.getElementById('c14-error');
-  const curveSelect = document.getElementById('c14-curve');
+  const bpInput = document.getElementById('c14-bp-input') || document.getElementById('c14-bp');
+  const errorInput = document.getElementById('c14-sigma-input') || document.getElementById('c14-error');
   const result1Sigma = document.getElementById('c14-1sigma');
   const result2Sigma = document.getElementById('c14-2sigma');
   const resultMedian = document.getElementById('c14-median');
 
-  if (!form || !bpInput) return;
+  if (!bpInput) return;
 
   function calibrate() {
     const bp = parseFloat(bpInput.value) || 2450;
-    const error = parseFloat(errorInput.value) || 30;
-    const curve = curveSelect.value;
+    const error = errorInput ? (parseFloat(errorInput.value) || 30) : 30;
 
     // Piecewise cubic approximation to IntCal20 around typical Holocene dates:
-    // Calendar Cal BP ≈ bp * 1.05 + 120 (with atmospheric fluctuation adjustment)
     const calBP_median = Math.round(bp * 1.042 + 95);
     const calYear_median = 1950 - calBP_median; // Negative is BCE, positive is CE
 
@@ -224,14 +221,22 @@ function initRadiocarbonLab() {
     }
 
     if (resultMedian) resultMedian.textContent = formatEra(calYear_median);
-    if (result1Sigma) result1Sigma.textContent = `${formatEra(cal1_start)} – ${formatEra(cal1_end)} (68.2% prob)`;
-    if (result2Sigma) result2Sigma.textContent = `${formatEra(cal2_start)} – ${formatEra(cal2_end)} (95.4% prob)`;
+    if (result1Sigma) result1Sigma.textContent = `${formatEra(cal1_start)} – ${formatEra(cal1_end)}`;
+    if (result2Sigma) result2Sigma.textContent = `${formatEra(cal2_start)} – ${formatEra(cal2_end)}`;
   }
 
-  form.addEventListener('input', calibrate);
-  form.addEventListener('change', calibrate);
+  bpInput.addEventListener('input', calibrate);
+  if (errorInput) errorInput.addEventListener('input', calibrate);
   calibrate();
 }
+
+window.switchLabTab = function(tabId) {
+  document.querySelectorAll('.lab-tab-btn').forEach(btn => btn.classList.remove('active'));
+  document.querySelectorAll('.lab-tab-pane').forEach(pane => pane.classList.remove('active'));
+  if (event && event.currentTarget) event.currentTarget.classList.add('active');
+  const target = document.getElementById(tabId);
+  if (target) target.classList.add('active');
+};
 
 // --------------------------------------------------------------------------
 // 5. Stratigraphic Harris Matrix Cycle Detection Simulator
@@ -370,3 +375,30 @@ function initCopyButtons() {
     });
   });
 }
+
+// --------------------------------------------------------------------------
+// 10. Sticky Bottom CTA Bar (Matches frontend StickyCta behavior)
+// --------------------------------------------------------------------------
+function initStickyCta() {
+  const stickyCta = document.getElementById('sticky-cta-bar');
+  const stickyClose = document.getElementById('sticky-cta-close');
+  if (!stickyCta || !stickyClose) return;
+
+  let stickyDismissed = false;
+
+  window.addEventListener('scroll', () => {
+    if (!stickyDismissed) {
+      if (window.scrollY > 550) {
+        stickyCta.style.display = 'block';
+      } else {
+        stickyCta.style.display = 'none';
+      }
+    }
+  });
+
+  stickyClose.addEventListener('click', () => {
+    stickyDismissed = true;
+    stickyCta.style.display = 'none';
+  });
+}
+
