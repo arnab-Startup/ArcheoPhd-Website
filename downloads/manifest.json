@@ -1,0 +1,82 @@
+{
+  "$schema": "https://schema.archaeophd.org/distribution-manifest-v1.json",
+  "app_name": "ArchaeoPhD Desktop",
+  "version": "1.0.0-mvp",
+  "release_channel": "stable",
+  "target_os": "windows-x86_64",
+  "build_date": "2026-10-08",
+  "author": "ArchaeoPhD Core Team",
+  "license": "Academic Proprietary - Evaluation Build",
+  "binaries": {
+    "installer": {
+      "filename": "ArchaeoPhD-Setup.exe",
+      "size_bytes": 9987072,
+      "size_human": "9.52 MB",
+      "sha256": "82c60419b5b46fc074113ae88d212e2cc3c9709b562ada284a6acbd52bff6ecf",
+      "entry_point": "ArchaeoPhD.exe",
+      "architecture": "x86_64",
+      "subsystem": "windows_gui"
+    },
+    "runtime_dependencies": [
+      {
+        "name": "Microsoft Edge WebView2 Runtime",
+        "minimum_version": "110.0.1587.41",
+        "bundled_loader": "WebView2Loader.dll",
+        "loader_sha256": "3426dcc55fdfb8b5e7ac623cf33b4ccf283fbf68a0c5a65bddfdb4d749a8abee"
+      }
+    ]
+  },
+  "distribution_tiers": {
+    "tier_1_bootstrap": {
+      "title": "Smart Web Installer (Recommended)",
+      "download_size": "9.52 MB",
+      "behavior": "Instant 3-second download. Installs the C++ vector client and GUI. On first launch, lets the researcher select custom Data Root (e.g. secondary SSD or D: drive) and streams model weights in the background with resume capability."
+    },
+    "tier_2_airgapped": {
+      "title": "Air-Gapped Fieldwork Archive (Offline Sites)",
+      "download_size": "4.85 GB",
+      "behavior": "All-in-one standalone package pre-bundled with 7B LLM weights and embeddings. Designed for remote archaeological excavations, desert field surveys, and laboratory air-gapped workstations without internet."
+    }
+  },
+  "offline_neural_models": {
+    "reasoning_llm": {
+      "name": "Qwen2.5-7B-Instruct-Q4_K_M",
+      "filename": "Qwen2.5-7B-Instruct-Q4_K_M.gguf",
+      "size_bytes": 4683074240,
+      "size_human": "4.36 GiB (4.68 GB)",
+      "quantization": "Q4_K_M",
+      "context_window": 8192,
+      "source_repo": "https://huggingface.co/Qwen/Qwen2.5-7B-Instruct-GGUF",
+      "role": "Local archaeological claim contradiction detection, causal reasoning, thesis audit",
+      "required_ram_mb": 5400
+    },
+    "embedding_engine": {
+      "name": "nomic-embed-text-v1.5.Q4_K_M",
+      "filename": "nomic-embed-text-v1.5.Q4_K_M.gguf",
+      "size_bytes": 84106624,
+      "size_human": "80.2 MiB (84.1 MB)",
+      "quantization": "Q4_K_M",
+      "dimension": 768,
+      "source_repo": "https://huggingface.co/nomic-ai/nomic-embed-text-v1.5-GGUF",
+      "role": "Dense vector embedding for hybrid BM25 + cosine vector retrieval across field reports",
+      "required_ram_mb": 256
+    }
+  },
+  "hardware_requirements": {
+    "minimum": {
+      "cpu": "x86_64 CPU with AVX2 instruction set (Intel Haswell 2013+ / AMD Zen 2017+)",
+      "ram_gb": 8,
+      "storage_gb": 10,
+      "storage_type": "SSD or NVMe recommended",
+      "os": "Windows 10 (Build 19041+) or Windows 11 64-bit"
+    },
+    "recommended": {
+      "cpu": "Intel Core i7/i9 10th Gen+ or AMD Ryzen 7/9 5000+ (8+ cores)",
+      "ram_gb": 16,
+      "gpu": "NVIDIA RTX 3060 / 4060 or better (8 GB+ VRAM) for GPU offloading",
+      "storage_gb": 25,
+      "storage_type": "Fast NVMe PCIe 4.0 SSD",
+      "os": "Windows 11 64-bit"
+    }
+  }
+}

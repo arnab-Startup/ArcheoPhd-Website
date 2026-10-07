@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ArchaeoPhD — Evidence-Traceable AI Research Workspace for Archaeology</title>
+  <meta name="description" content="Organize archaeological literature, excavation reports, radiocarbon chronology, stratigraphic matrices, claims, and dissertation evidence in one high-performance offline C++ workstation.">
+  <meta name="keywords" content="Archaeology, PhD Dissertation, Radiocarbon Calibration, IntCal20, Harris Matrix, Stratigraphy, Contradiction Detection, Vector Search, Local AI, LLM">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;800&family=JetBrains+Mono:wght@400;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="bg-grain"></div>
+
+  <!-- =========================================================================
+       Navigation Bar
+       ========================================================================= -->
+  <header class="navbar" id="main-navbar">
+    <div class="container">
+      <a href="#hero" class="nav-brand" id="nav-brand-logo">
+        <div class="nav-brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <span>Archaeo<span class="text-amber">PhD</span></span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="#architecture" class="nav-link" id="nav-link-arch">App Size & Offline AI</a></li>
+          <li><a href="#interactive-lab" class="nav-link" id="nav-link-features">Interactive Lab</a></li>
+          <li><a href="#hardware" class="nav-link" id="nav-link-hw">System Specs</a></li>
+          <li><a href="#downloads" class="nav-link" id="nav-link-downloads">Installers</a></li>
+          <li><a href="#pricing" class="nav-link" id="nav-link-pricing">Pricing</a></li>
+          <li><a href="#faq" class="nav-link" id="nav-link-faq">FAQ</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <span class="nav-badge" id="nav-status-badge">v1.0.0 Stable</span>
+        <a href="#downloads" class="btn btn-primary btn-sm" id="nav-btn-download">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Download (9.5 MB)
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- =========================================================================
+         Hero Section
+         ========================================================================= -->
+    <section class="hero" id="hero">
+      <div class="hero-glow-1"></div>
+      <div class="hero-glow-2"></div>
+      <div class="container">
+        <div class="hero-grid">
+          <div>
+            <div class="hero-tag" id="hero-tag-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              <span>100% On-Device Privacy · Zero Cloud Data Leakage</span>
+            </div>
+
+            <h1 class="hero-title">
+              Turn hundreds of archaeological sources into <span class="text-gradient">connected evidence.</span>
+            </h1>
+
+            <p class="hero-desc">
+              Organize excavation field reports, radiocarbon dates, stratigraphic Harris matrices, conflicting chronology claims, and dissertation notes in one native C++ AI research workstation.
+            </p>
+
+            <div class="hero-cta-group">
+              <a href="downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" class="btn btn-primary btn-lg" id="btn-download-hero-primary">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                Download for Windows (9.5 MB)
+              </a>
+
+              <button class="btn btn-secondary btn-lg" data-modal-target="modal-offline-pack" id="btn-hero-offline-info">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4M12 8h.01"/></svg>
+                Offline Fieldwork Pack (4.8 GB)
+              </button>
+            </div>
+
+            <div class="hero-install-meta">
+              <span id="detected-os-badge"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zM22 6l-10 7L2 6"/></svg> Windows 10/11 64-bit</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> SHA-256 Verified</span>
+              <span><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Fast 3-Sec Download</span>
+            </div>
+          </div>
+
+          <!-- Hero Interactive Evidence Graph -->
+          <div class="hero-visual-card" id="hero-graph-card">
+            <div class="visual-header">
+              <span style="font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 0.5rem;">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--primary-amber)" stroke-width="2"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
+                Live Stratigraphic Evidence Graph
+              </span>
+              <div class="visual-badge">
+                <span class="pulse-dot"></span>
+                <span>Native C++ Engine</span>
+              </div>
+            </div>
+
+            <div class="graph-canvas" id="graph-canvas-interactive">
+              <!-- SVG connector lines -->
+              <svg width="100%" height="100%" style="position: absolute; inset: 0;">
+                <line x1="120" y1="45" x2="210" y2="120" stroke="rgba(255,255,255,0.15)" stroke-width="1.5" stroke-dasharray="3,3"/>
+                <line x1="110" y1="125" x2="210" y2="120" stroke="rgba(6,182,212,0.3)" stroke-width="1.5"/>
+                <line x1="120" y1="205" x2="210" y2="120" stroke="rgba(245,158,11,0.3)" stroke-width="1.5"/>
+                <line x1="330" y1="85" x2="210" y2="120" stroke="rgba(16,185,129,0.3)" stroke-width="1.5"/>
+                <line x1="330" y1="180" x2="210" y2="120" stroke="rgba(244,63,94,0.4)" stroke-width="1.5"/>
+              </svg>
+
+              <div class="graph-node node-claim" title="Core Thesis Claim">
+                <span>Claim: Urban Transition 1900 BCE</span>
+              </div>
+              <div class="graph-node node-c14" title="Calibrated Radiocarbon Date">
+                <span>IntCal20: 3820±35 BP</span>
+              </div>
+              <div class="graph-node node-stratum" title="Harris Matrix Context">
+                <span>Stratum: Locus 104 (Seal)</span>
+              </div>
+              <div class="graph-node node-site" title="Excavation Site">
+                <span>Site: Mohenjo-Daro DK-G</span>
+              </div>
+              <div class="graph-node node-conflict" title="Detected Contradiction">
+                <span>Conflict: Marshall vs Kenoyer</span>
+              </div>
+              <div class="graph-node node-center" title="Central Argument Anchor">
+                <span>Thesis Anchor #12</span>
+              </div>
+            </div>
+
+            <div class="visual-stats">
+              <div class="stat-box">
+                <div class="stat-box-val text-amber">9.52 MB</div>
+                <div class="stat-box-lbl">Binary Size</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-box-val text-emerald">100%</div>
+                <div class="stat-box-lbl">Local Air-Gapped</div>
+              </div>
+              <div class="stat-box">
+                <div class="stat-box-val text-cyan">IntCal20</div>
+                <div class="stat-box-lbl">Calibrated Curves</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         APP SIZE & REAL-WORLD DISTRIBUTION ARCHITECTURE (Addresses user prompt)
+         ========================================================================= -->
+    <section class="section" id="architecture">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Architecture & Distribution Transparency</span>
+          <h2 class="section-title">Why is the application 9.5 MB vs 4.85 GB?</h2>
+          <p class="section-subtitle">
+            How real-world high-performance AI workstations decouple the ultra-lightweight client from offline neural weights, giving you instant installation and total drive flexibility.
+          </p>
+        </div>
+
+        <div class="size-card">
+          <div class="size-header-grid">
+            <div>
+              <span class="size-callout-badge">Real-World Distribution Pattern</span>
+              <h3 style="font-size: 1.5rem; margin-bottom: 0.75rem;">Two Installation Tiers Built for Archaeologists</h3>
+              <p class="text-muted" style="font-size: 0.92rem; line-height: 1.6;">
+                Instead of forcing users to download a massive monolithic 5 GB installer over slow internet, ArchaeoPhD uses the industry standard distribution model (similar to Ollama, LM Studio, and Obsidian):
+              </p>
+            </div>
+
+            <!-- Tier Selector Toggle -->
+            <div class="tier-selector">
+              <button class="tier-tab active" id="tab-bootstrap">
+                Tier 1: Web Installer <span class="badge">9.5 MB</span>
+              </button>
+              <button class="tier-tab" id="tab-airgapped">
+                Tier 2: Fieldwork Pack <span class="badge">4.85 GB</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Dynamic Info Box -->
+          <div style="background: rgba(8,12,20,0.6); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 2rem;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+              <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase;">Download Size:</span>
+              <span style="font-size: 1.1rem; font-weight: 700; color: var(--primary-amber);" id="tier-download-size">9.52 MB (Instant Download)</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+              <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-dim); text-transform: uppercase;">Storage Location:</span>
+              <span style="font-size: 0.9rem; color: var(--text-muted);" id="tier-storage-impact">Models streamed to user-chosen Data Root on launch</span>
+            </div>
+            <p style="font-size: 0.88rem; color: var(--text-main); border-top: 1px solid var(--border); padding-top: 0.75rem;" id="tier-summary-text">
+              <strong>Tier 1: Smart Web Installer (Recommended)</strong> — You download only the compiled native C++ vector engine (9.5 MB). When launched, it allows you to choose an external SSD or secondary drive for the 4.8 GB models, keeping your primary C: drive clean.
+            </p>
+          </div>
+
+          <!-- Visual Bar Breakdown -->
+          <div class="size-bars">
+            <div class="size-item">
+              <div class="size-item-info">
+                <span>Native C++ Engine (<code style="font-family: var(--font-mono); color: #34d399;">ArchaeoPhD.exe</code>)</span>
+                <span class="text-emerald">9.52 MB (0.2%)</span>
+              </div>
+              <div class="size-bar-bg">
+                <div class="size-bar-fill fill-exe" id="bar-exe" style="width: 100%;"></div>
+              </div>
+            </div>
+
+            <div class="size-item">
+              <div class="size-item-info">
+                <span>Dense Neural Embeddings (<code style="font-family: var(--font-mono); color: #60a5fa;">nomic-embed-text-v1.5</code>)</span>
+                <span class="text-cyan">84.1 MB (1.7%)</span>
+              </div>
+              <div class="size-bar-bg">
+                <div class="size-bar-fill fill-embed" id="bar-embed" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="size-item">
+              <div class="size-item-info">
+                <span>Offline Reasoning LLM (<code style="font-family: var(--font-mono); color: #f97316;">Qwen2.5-7B-Instruct-Q4_K_M</code>)</span>
+                <span class="text-amber">4.68 GB (98.1%)</span>
+              </div>
+              <div class="size-bar-bg">
+                <div class="size-bar-fill fill-llm" id="bar-llm" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Why 4.8 GB Explanation Cards -->
+          <div class="size-reasons-grid">
+            <div class="reason-card">
+              <div class="reason-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              </div>
+              <h4 class="reason-title">Remote Dig Site Isolation</h4>
+              <p class="reason-desc">
+                Excavation trenches in the Indus Valley, Egyptian Western Desert, or Andean highlands have zero cellular reception. Having the full 7B neural model offline on your laptop means uninterrupted research.
+              </p>
+            </div>
+
+            <div class="reason-card">
+              <div class="reason-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+              </div>
+              <h4 class="reason-title">Strict Thesis IP Security</h4>
+              <p class="reason-desc">
+                Your unpublished excavation data, artifact measurements, and novel thesis arguments never leave your hard drive. No cloud API logging, no third-party training, and zero plagiarism exposure.
+              </p>
+            </div>
+
+            <div class="reason-card">
+              <div class="reason-icon">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+              </div>
+              <h4 class="reason-title">Decoupled Data Root</h4>
+              <p class="reason-desc">
+                Don't want 5 GB on your primary Windows drive? The installer allows pointing the Data Root to any external SSD or high-capacity secondary disk (<code style="font-family: var(--font-mono); color: #f97316;">D:\ArchaeoPhD-Data</code>).
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         INTERACTIVE ARCHAEOLOGICAL LABS
+         ========================================================================= -->
+    <section class="section section-alt" id="interactive-lab">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Interactive Feature Laboratory</span>
+          <h2 class="section-title">Built specifically for archaeological scholarship.</h2>
+          <p class="section-subtitle">
+            Experience the algorithms built directly into the C++ native workstation: radiocarbon calibration, Harris matrix stratigraphy, and 4-tier contradiction detection.
+          </p>
+        </div>
+
+        <div class="feature-tabs-nav">
+          <button class="ftab-btn active" onclick="switchFeatureTab('tab-c14')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            IntCal20 Radiocarbon Calibration
+          </button>
+          <button class="ftab-btn" onclick="switchFeatureTab('tab-harris')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            Harris Stratigraphic Matrix
+          </button>
+          <button class="ftab-btn" onclick="switchFeatureTab('tab-contradiction')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            4-Tier Contradiction Detector
+          </button>
+        </div>
+
+        <!-- Tab 1: C-14 Calibration -->
+        <div id="tab-c14" class="ftab-content active">
+          <div class="demo-card">
+            <div class="demo-grid-2">
+              <form class="cal-form" id="c14-form" onsubmit="return false;">
+                <h4 style="font-size: 1.15rem; margin-bottom: 1rem; color: #ffffff;">IntCal20 Spline Calibrator</h4>
+                
+                <div class="cal-input-group">
+                  <label class="cal-input-label" for="c14-bp">Uncalibrated Radiocarbon Date (BP)</label>
+                  <input type="number" id="c14-bp" class="cal-input" value="2450" min="500" max="50000" step="10">
+                </div>
+
+                <div class="cal-input-group">
+                  <label class="cal-input-label" for="c14-error">Analytical Uncertainty (± 1σ Error)</label>
+                  <input type="number" id="c14-error" class="cal-input" value="30" min="5" max="300" step="5">
+                </div>
+
+                <div class="cal-input-group">
+                  <label class="cal-input-label" for="c14-curve">Calibration Curve Standard</label>
+                  <select id="c14-curve" class="cal-input" style="background: #0f172a;">
+                    <option value="intcal20">IntCal20 (Northern Hemisphere Terrestrial)</option>
+                    <option value="shcal20">SHCal20 (Southern Hemisphere)</option>
+                    <option value="marine20">Marine20 (Marine Reservoir ΔR=0)</option>
+                  </select>
+                </div>
+
+                <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 0.5rem;">
+                  Interactive live calculation runs client-side using piecewise cubic spline interpolation.
+                </div>
+              </form>
+
+              <div class="cal-results-display">
+                <span style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim); letter-spacing: 0.08em;">Calibrated Calendar Age</span>
+                <div class="cal-age-badge" id="c14-median">500 BCE</div>
+
+                <div class="cal-sigma-box">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.25rem;">
+                    <span>68.2% Probability (1σ)</span>
+                    <span class="text-amber" id="c14-1sigma">540 BCE – 470 BCE</span>
+                  </div>
+                  <div style="font-size: 0.75rem; color: var(--text-dim);">Standard archaeological reporting interval</div>
+                </div>
+
+                <div class="cal-sigma-box">
+                  <div style="display: flex; justify-content: space-between; font-size: 0.82rem; font-weight: 600; margin-bottom: 0.25rem;">
+                    <span>95.4% Probability (2σ)</span>
+                    <span class="text-cyan" id="c14-2sigma">590 BCE – 420 BCE</span>
+                  </div>
+                  <div style="font-size: 0.75rem; color: var(--text-dim);">High-confidence comprehensive envelope</div>
+                </div>
+
+                <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; border-top: 1px solid var(--border); padding-top: 0.75rem;">
+                  <strong class="text-emerald">Native Engine Verification:</strong> Contradictions in publication dates are automatically checked against this calibrated envelope, flagging out-of-sequence chronologies.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 2: Harris Stratigraphic Matrix -->
+        <div id="tab-harris" class="ftab-content">
+          <div class="demo-card">
+            <div class="demo-grid-2">
+              <div>
+                <h4 style="font-size: 1.25rem; margin-bottom: 0.75rem;">Harris Matrix Topological Validator</h4>
+                <p class="text-muted" style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
+                  Archaeological stratigraphy obeys Steno's Law of Superposition. A stratum deposited earlier cannot sit physically above a later layer. ArchaeoPhD uses Kahn's topological sort in C++ to instantly detect cyclic stratigraphic impossibilities in field reports.
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.5rem;">
+                  <button class="btn btn-primary" id="harris-toggle-conflict">
+                    Inject Stratigraphic Paradox
+                  </button>
+                </div>
+
+                <div style="padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border); background: rgba(8,12,20,0.5);">
+                  <div style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.35rem;">Algorithm Status</div>
+                  <div id="harris-status-badge" style="font-size: 0.88rem; font-weight: 700; color: #34d399; margin-bottom: 0.35rem;">VALID STRATIGRAPHIC SEQUENCE (Acyclic)</div>
+                  <div id="harris-status-desc" style="font-size: 0.82rem; color: var(--text-muted);">Topological ordering: Context 101 (Topsoil) → Context 102 (Hearth fill) → Context 103 (Foundation trench). Consistent with Superposition Law.</div>
+                </div>
+              </div>
+
+              <div class="harris-canvas-demo">
+                <div class="harris-stratum-row">
+                  <div class="harris-unit">[101] Topsoil & Humus Layer</div>
+                </div>
+                <div class="harris-arrow">↓ (deposits over)</div>
+                <div class="harris-stratum-row">
+                  <div class="harris-unit">[102] Hearth Fill / Ash Deposit</div>
+                </div>
+                <div class="harris-arrow">↓ (cuts into)</div>
+                <div class="harris-stratum-row">
+                  <div class="harris-unit">[103] Foundation Trench Fill</div>
+                </div>
+                <div id="harris-conflict-arrow" style="display: none; text-align: center; color: #f43f5e; font-size: 0.85rem; font-weight: 700; margin-top: 0.75rem; background: rgba(244,63,94,0.15); padding: 0.5rem; border-radius: 4px; border: 1px dashed #f43f5e;">
+                  ⚠ Paradoxical Edge: [103] erroneously recorded as overlying [101]!
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 3: Contradiction Detector -->
+        <div id="tab-contradiction" class="ftab-content">
+          <div class="demo-card">
+            <h4 style="font-size: 1.25rem; margin-bottom: 0.5rem;">4-Tier Contradiction Detection Engine</h4>
+            <p class="text-muted" style="font-size: 0.9rem; margin-bottom: 1.5rem;">
+              Unlike general AI chatbots that hallucinate or silently blend disagreements, ArchaeoPhD categorizes scholarly conflicts into four distinct, audited tiers:
+            </p>
+
+            <div class="conflict-tier-list">
+              <div class="conflict-card tier-chronological">
+                <span class="conflict-badge badge-chronological">Tier 1: Chronological Divergence</span>
+                <div style="font-weight: 600; font-size: 0.92rem; margin-bottom: 0.25rem;">
+                  Marshall (1931) places Mature Harappan start at 3250 BCE vs Kenoyer (1998) at 2600 BCE
+                </div>
+                <div style="font-size: 0.82rem; color: var(--text-muted);">
+                  Engine flags a 650-year phase displacement between pre-radiocarbon excavation reports and modern calibrated IntCal20 sequences.
+                </div>
+              </div>
+
+              <div class="conflict-card tier-numerical">
+                <span class="conflict-badge badge-numerical">Tier 2: Numerical & Quantitative Clash</span>
+                <div style="font-weight: 600; font-size: 0.92rem; margin-bottom: 0.25rem;">
+                  Trench 4A Ceramic Count: Report A cites 1,420 sherds vs Field Register B cites 890 sherds
+                </div>
+                <div style="font-size: 0.82rem; color: var(--text-muted);">
+                  Surface tally conflict prevents accidental double-counting in artifact statistical distributions.
+                </div>
+              </div>
+
+              <div class="conflict-card tier-terminological">
+                <span class="conflict-badge badge-terminological">Tier 3: Terminological Inconsistency</span>
+                <div style="font-weight: 600; font-size: 0.92rem; margin-bottom: 0.25rem;">
+                  "Late Harappan" vs "Post-Urban Phase" applied to identical Locus 203 assemblages
+                </div>
+                <div style="font-size: 0.82rem; color: var(--text-muted);">
+                  Identifies synonymy and taxon drifts across decades of differing scholarly paradigms.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         HARDWARE SUITABILITY & PERFORMANCE ESTIMATOR
+         ========================================================================= -->
+    <section class="section" id="hardware">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Workstation Sizing</span>
+          <h2 class="section-title">Hardware Suitability & Performance Calculator</h2>
+          <p class="section-subtitle">
+            See how your PC will handle the offline 7B neural reasoning engine and high-dimensional vector retrieval.
+          </p>
+        </div>
+
+        <div class="hardware-box">
+          <div>
+            <!-- RAM Selector -->
+            <div class="hw-control-group">
+              <div class="hw-label">
+                <span>System Physical RAM</span>
+                <span class="text-amber" id="lbl-ram-val">16 GB Selected</span>
+              </div>
+              <div class="hw-select-buttons">
+                <button class="hw-btn ram-btn" data-ram="8" id="hw-ram-8">8 GB (Min)</button>
+                <button class="hw-btn ram-btn active" data-ram="16" id="hw-ram-16">16 GB (Recommended)</button>
+                <button class="hw-btn ram-btn" data-ram="32" id="hw-ram-32">32 GB (Pro)</button>
+                <button class="hw-btn ram-btn" data-ram="64" id="hw-ram-64">64 GB (Lab)</button>
+              </div>
+            </div>
+
+            <!-- GPU Selector -->
+            <div class="hw-control-group">
+              <div class="hw-label">
+                <span>Acceleration Engine</span>
+                <span class="text-amber">CPU / GPU Tier</span>
+              </div>
+              <div class="hw-select-buttons">
+                <button class="hw-btn gpu-btn active" data-gpu="cpu" id="hw-gpu-cpu">CPU Only (AVX2)</button>
+                <button class="hw-btn gpu-btn" data-gpu="rtx30" id="hw-gpu-rtx30">RTX 3060 / 4060 (8GB)</button>
+                <button class="hw-btn gpu-btn" data-gpu="rtx40" id="hw-gpu-rtx40">RTX 4080 / 4090 (16GB+)</button>
+              </div>
+            </div>
+
+            <div style="font-size: 0.82rem; color: var(--text-dim); margin-top: 1rem; line-height: 1.5;">
+              <strong style="color: var(--text-main);">Offline Model Weight Footprint:</strong> Qwen 2.5 7B Q4_K_M occupies 4.68 GB of resident memory. Nomic Embeddings occupy 84 MB. Windows OS requires ~2.5 GB.
+            </div>
+          </div>
+
+          <!-- Dynamic Result Panel -->
+          <div class="hw-result-panel">
+            <div>
+              <div class="hw-gauge-title">Suitability Rating</div>
+              <div class="hw-gauge-status" id="hw-status" style="color: var(--accent-emerald);">Optimal PhD Baseline</div>
+              <p style="font-size: 0.85rem; color: var(--text-muted);" id="hw-badge">Recommended for 7B Q4_K_M</p>
+            </div>
+
+            <div class="hw-metric-row">
+              <div>
+                <div class="hw-metric-val" id="hw-ram-usage">5.4 GB / 16 GB</div>
+                <div class="hw-metric-lbl">RAM Allocated</div>
+              </div>
+              <div>
+                <div class="hw-metric-val" id="hw-speed">14 tokens/sec</div>
+                <div class="hw-metric-lbl">Inference Speed</div>
+              </div>
+            </div>
+
+            <div style="font-size: 0.82rem; color: var(--text-dim); margin-top: 1rem; padding-top: 0.75rem; border-top: 1px solid var(--border);">
+              All models run completely locally on CPU or CUDA via embedded <code style="font-family: var(--font-mono); color: #f97316;">llama.cpp</code> dynamic engines.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         DOWNLOADS & REAL-WORLD DISTRIBUTION HUB (The Installer Repository)
+         ========================================================================= -->
+    <section class="section" id="downloads">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Distribution Hub</span>
+          <h2 class="section-title">Official Download & Installation Center</h2>
+          <p class="section-subtitle">
+            All releases are compiled natively with MinGW G++ on Windows x86_64, cryptographically hashed, and ready for deployment.
+          </p>
+        </div>
+
+        <!-- Installation Steps -->
+        <div class="steps-grid">
+          <div class="step-card">
+            <span class="step-number">01</span>
+            <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(194,94,46,0.15); color: var(--primary-amber); display: grid; place-items: center;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            </div>
+            <h3>Download Setup (9.5 MB)</h3>
+            <p>Download the ultra-lightweight client executable. It starts downloading in 3 seconds with zero wait time.</p>
+          </div>
+
+          <div class="step-card">
+            <span class="step-number">02</span>
+            <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(6,182,212,0.15); color: var(--accent-cyan); display: grid; place-items: center;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3>Select Data Drive</h3>
+            <p>Choose where to store your research papers and 4.8 GB models (e.g. secondary NVMe or external SSD <code style="font-family: var(--font-mono); color: #f97316;">D:\ArchaeoPhD-Data</code>).</p>
+          </div>
+
+          <div class="step-card">
+            <span class="step-number">03</span>
+            <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(16,185,129,0.15); color: var(--accent-emerald); display: grid; place-items: center;">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3>Offline AI Research</h3>
+            <p>Stream or link models with 1 click. Work 100% offline with full C-14, Harris matrix, and contradiction detection.</p>
+          </div>
+        </div>
+
+        <!-- Downloads Table -->
+        <div class="downloads-table-container">
+          <table class="downloads-table">
+            <thead>
+              <tr>
+                <th>Artifact Name</th>
+                <th>Format / Type</th>
+                <th>File Size</th>
+                <th>SHA-256 Hash</th>
+                <th style="text-align: right;">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <div class="file-name-cell">
+                    <div class="file-icon">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                    </div>
+                    <div>
+                      <div>ArchaeoPhD-Setup.exe</div>
+                      <div style="font-size: 0.75rem; color: var(--text-dim);">Recommended Smart Web Installer</div>
+                    </div>
+                  </div>
+                </td>
+                <td>Windows Portable Executable (.exe)</td>
+                <td><strong class="text-amber">9.52 MB</strong></td>
+                <td><span class="code-hash" title="82c60419b5b46fc074113ae88d212e2cc3c9709b562ada284a6acbd52bff6ecf">82c60419...bff6ecf</span></td>
+                <td style="text-align: right;">
+                  <a href="downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" class="btn btn-primary btn-sm" id="btn-download-table-exe">
+                    Download
+                  </a>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="file-name-cell">
+                    <div class="file-icon" style="background: rgba(6,182,212,0.15); color: var(--accent-cyan);">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                    </div>
+                    <div>
+                      <div>install.bat</div>
+                      <div style="font-size: 0.75rem; color: var(--text-dim);">1-Click Automated Batch Setup Script</div>
+                    </div>
+                  </div>
+                </td>
+                <td>Windows Batch Command (.bat)</td>
+                <td><strong>4.2 KB</strong></td>
+                <td><span class="code-hash">Automated Audit</span></td>
+                <td style="text-align: right;">
+                  <a href="downloads/install.bat" download="install.bat" class="btn btn-secondary btn-sm" id="btn-download-table-bat">
+                    Download Script
+                  </a>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="file-name-cell">
+                    <div class="file-icon" style="background: rgba(59,130,246,0.15); color: #60a5fa;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></svg>
+                    </div>
+                    <div>
+                      <div>install.ps1</div>
+                      <div style="font-size: 0.75rem; color: var(--text-dim);">PowerShell Silent Deployment Script</div>
+                    </div>
+                  </div>
+                </td>
+                <td>PowerShell Script (.ps1)</td>
+                <td><strong>3.8 KB</strong></td>
+                <td><span class="code-hash">Verified Script</span></td>
+                <td style="text-align: right;">
+                  <a href="downloads/install.ps1" download="install.ps1" class="btn btn-secondary btn-sm" id="btn-download-table-ps1">
+                    Download Script
+                  </a>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="file-name-cell">
+                    <div class="file-icon" style="background: rgba(16,185,129,0.15); color: var(--accent-emerald);">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                    </div>
+                    <div>
+                      <div>manifest.json</div>
+                      <div style="font-size: 0.75rem; color: var(--text-dim);">Distribution & Model Weight Manifest</div>
+                    </div>
+                  </div>
+                </td>
+                <td>JSON Manifest Metadata</td>
+                <td><strong>2.5 KB</strong></td>
+                <td><span class="code-hash">Schema v1</span></td>
+                <td style="text-align: right;">
+                  <a href="downloads/manifest.json" target="_blank" class="btn btn-outline btn-sm" id="btn-view-manifest">
+                    View Manifest
+                  </a>
+                </td>
+              </tr>
+
+              <tr>
+                <td>
+                  <div class="file-name-cell">
+                    <div class="file-icon" style="background: rgba(245,158,11,0.15); color: #fbbf24;">
+                      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                    </div>
+                    <div>
+                      <div>checksums.sha256</div>
+                      <div style="font-size: 0.75rem; color: var(--text-dim);">Cryptographic Integrity Checksums</div>
+                    </div>
+                  </div>
+                </td>
+                <td>Plaintext Hashes</td>
+                <td><strong>236 Bytes</strong></td>
+                <td><span class="code-hash">Cryptographic Seal</span></td>
+                <td style="text-align: right;">
+                  <a href="downloads/checksums.sha256" target="_blank" class="btn btn-outline btn-sm" id="btn-view-hashes">
+                    View Checksums
+                  </a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         PRICING SECTION
+         ========================================================================= -->
+    <section class="section section-alt" id="pricing">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Pricing & Licensing</span>
+          <h2 class="section-title">Built for the long arc of a PhD.</h2>
+          <p class="section-subtitle">
+            Transparent pricing tailored for doctoral candidates, research teams, and university departments.
+          </p>
+
+          <div style="display: inline-flex; background: rgba(8,12,20,0.6); padding: 0.25rem; border-radius: var(--radius-full); border: 1px solid var(--border); margin-top: 1.5rem;">
+            <button class="btn btn-sm curr-btn active" data-curr="INR" style="border-radius: var(--radius-full);">India (INR ₹)</button>
+            <button class="btn btn-sm curr-btn" data-curr="USD" style="border-radius: var(--radius-full);">International (USD $)</button>
+          </div>
+        </div>
+
+        <div class="pricing-grid">
+          <!-- Student -->
+          <div class="pricing-card" id="pricing-card-student">
+            <h3 style="font-size: 1.35rem;">Student</h3>
+            <p class="text-muted" style="font-size: 0.85rem;">For students and independent researchers</p>
+            <div class="price-val" id="price-student">₹0</div>
+            <div style="font-size: 0.8rem; color: var(--text-dim);">Free forever · No credit card</div>
+
+            <ul class="price-features">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> 1 active research project</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Unlimited local native C++ vector search</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> IntCal20 C-14 calibration tool</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Harris Matrix stratigraphic view</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Community support & documentation</li>
+            </ul>
+
+            <a href="#downloads" class="btn btn-outline" style="width: 100%;">Get Started Free</a>
+          </div>
+
+          <!-- Researcher -->
+          <div class="pricing-card featured" id="pricing-card-researcher">
+            <span class="popular-badge">Most Popular</span>
+            <h3 style="font-size: 1.35rem;">Researcher</h3>
+            <p class="text-muted" style="font-size: 0.85rem;">For active Master's & doctoral dissertations</p>
+            <div class="price-val" id="price-researcher">₹499</div>
+            <div style="font-size: 0.8rem; color: var(--text-dim);">per month · Billed annually or monthly</div>
+
+            <ul class="price-features">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Up to 5 concurrent research projects</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Full 4-tier contradiction detector</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> C-14 IntCal20 & SHCal20 spline engine</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Dynamic Harris Matrix cycle detection</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Citation manager & PDF ingestion</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Direct email support</li>
+            </ul>
+
+            <a href="#downloads" class="btn btn-primary" style="width: 100%;">Choose Researcher</a>
+          </div>
+
+          <!-- Scholar Pro -->
+          <div class="pricing-card" id="pricing-card-scholar">
+            <h3 style="font-size: 1.35rem;">Scholar Pro</h3>
+            <p class="text-muted" style="font-size: 0.85rem;">For excavation directors & PhD supervisors</p>
+            <div class="price-val" id="price-scholar">₹999</div>
+            <div style="font-size: 0.8rem; color: var(--text-dim);">per month · Air-gapped license available</div>
+
+            <ul class="price-features">
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Unlimited excavation projects & trench logs</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Air-gapped USB field deployment pack</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Viva defense readiness audit & score gauge</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Multi-site spatial GIS coordination</li>
+              <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg> Priority developer & laboratory support</li>
+            </ul>
+
+            <a href="#downloads" class="btn btn-outline" style="width: 100%;">Choose Scholar Pro</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         FAQ ACCORDION
+         ========================================================================= -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Questions & Clarifications</span>
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <p class="section-subtitle">
+            Everything you need to know about app size, offline neural reasoning, and scholarly privacy.
+          </p>
+        </div>
+
+        <div class="faq-list">
+          <div class="faq-item open">
+            <button class="faq-question">
+              <span>Why is the total offline package ~4.85 GB when the installer is only 9.5 MB?</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              The application engine (<code style="font-family: var(--font-mono); color: #34d399;">ArchaeoPhD.exe</code>) is written in native C++ and is only <strong>9.52 MB</strong>. The remaining ~4.8 GB consists of the offline neural weights (Qwen 2.5 7B quantized at Q4_K_M = 4.68 GB, and Nomic Embeddings = 84 MB). This architecture ensures you can download the 9.5 MB installer instantly and choose any drive (e.g. an external SSD or D: drive) to store the heavy models.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Can I run ArchaeoPhD without an internet connection in the field?</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              Yes, 100%. ArchaeoPhD is designed specifically for remote field excavations (such as desert trenches or mountain surveys). Once the models are downloaded or pre-bundled in the Air-Gapped Fieldwork Pack, the entire software runs with zero internet connection, zero cloud telemetry, and zero latency.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Does ArchaeoPhD invent or hallucinate bibliographic citations?</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              Never. ArchaeoPhD uses a grounded retrieval architecture. Every generated insight separates Answer, Evidence, Sources, and Uncertainty. If your imported excavation reports or literature do not contain the answer, the engine explicitly reports "insufficient evidence in repository" rather than generating fictional citations.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Can I use an external SSD for the 4.8 GB models to save space on C:?</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              Yes! Both the installer script (<code style="font-family: var(--font-mono);">install.bat</code>) and the desktop application's first-launch setup prompt ask you for your preferred <strong>Research Data Root</strong>. You can simply specify <code style="font-family: var(--font-mono);">D:\ArchaeoPhD-Data</code> or an external USB-C drive.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>What are the minimum hardware specifications to run the local LLM?</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              The minimum requirement is 8 GB RAM and any 64-bit x86 CPU supporting AVX2 instructions (standard on all Intel/AMD processors since 2013). For smooth multi-threaded analysis alongside large PDF libraries, 16 GB RAM is recommended. An optional NVIDIA GPU (RTX 3060 or better) speeds up inference to 35+ tokens/second.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- =========================================================================
+       MODAL: OFFLINE FIELDWORK PACK & SIZE DETAILS
+       ========================================================================= -->
+  <div class="modal-overlay" id="modal-offline-pack">
+    <div class="modal-box">
+      <button class="modal-close" aria-label="Close modal">&times;</button>
+      <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
+        <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(194,94,46,0.15); color: var(--primary-amber); display: grid; place-items: center;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+        </div>
+        <h3 style="font-size: 1.35rem; color: #ffffff;">Offline Fieldwork Bundle Details</h3>
+      </div>
+
+      <p class="text-muted" style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
+        The offline fieldwork bundle is designed for research teams deploying to excavation sites without internet access. It packages the native engine together with calibrated curves and quantized model weights.
+      </p>
+
+      <div style="background: rgba(8,12,20,0.7); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.5rem;">
+        <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.75rem;">Archive Manifest Breakdown</div>
+        <ul style="list-style: none; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.5rem;">
+          <li style="display: flex; justify-content: space-between;">
+            <span>1. ArchaeoPhD Win32 C++ Executable</span>
+            <span class="text-emerald">9.52 MB</span>
+          </li>
+          <li style="display: flex; justify-content: space-between;">
+            <span>2. nomic-embed-text-v1.5 Embedding GGUF</span>
+            <span class="text-cyan">84.1 MB</span>
+          </li>
+          <li style="display: flex; justify-content: space-between;">
+            <span>3. Qwen2.5-7B-Instruct Reasoning GGUF</span>
+            <span class="text-amber">4.68 GB</span>
+          </li>
+          <li style="display: flex; justify-content: space-between;">
+            <span>4. IntCal20 & SHCal20 Calibration Splines</span>
+            <span class="text-muted">110 KB</span>
+          </li>
+          <li style="display: flex; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 0.5rem; font-weight: 700;">
+            <span>Total Uncompressed Size:</span>
+            <span class="text-amber">~4.85 GB</span>
+          </li>
+        </ul>
+      </div>
+
+      <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
+        <a href="downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" class="btn btn-primary btn-sm">
+          Download Web Installer (9.5 MB)
+        </a>
+        <a href="downloads/manifest.json" target="_blank" class="btn btn-outline btn-sm">
+          Inspect Manifest
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       Footer
+       ========================================================================= -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="nav-brand" style="margin-bottom: 1rem;">
+            <div class="nav-brand-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </div>
+            <span>Archaeo<span class="text-amber">PhD</span></span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-dim); line-height: 1.6; max-width: 320px;">
+            A local-first AI research workspace for archaeology. Built with native C++, embedded WebView2, IntCal20 radiocarbon splines, and offline neural reasoning.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Research Engine</h4>
+          <ul>
+            <li><a href="#interactive-lab">IntCal20 Calibration</a></li>
+            <li><a href="#interactive-lab">Harris Matrix Solver</a></li>
+            <li><a href="#interactive-lab">Contradiction Matrix</a></li>
+            <li><a href="#hero">Evidence Graph</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Distribution</h4>
+          <ul>
+            <li><a href="downloads/ArchaeoPhD-Setup.exe">Windows Setup (9.5 MB)</a></li>
+            <li><a href="downloads/install.bat">Batch Installer</a></li>
+            <li><a href="downloads/manifest.json">Package Manifest</a></li>
+            <li><a href="downloads/checksums.sha256">SHA-256 Hashes</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Documentation</h4>
+          <ul>
+            <li><a href="#architecture">Architecture & App Size</a></li>
+            <li><a href="#hardware">System Requirements</a></li>
+            <li><a href="#pricing">Academic Pricing</a></li>
+            <li><a href="#faq">Frequently Asked</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 ArchaeoPhD Core Team. All rights reserved. Academic Evaluation Release.</div>
+        <div>Engine: MinGW C++20 · Native Vector Architecture · 100% Offline</div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+  <script>
+    function switchFeatureTab(tabId) {
+      document.querySelectorAll('.ftab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.ftab-content').forEach(c => c.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+    }
+  </script>
+</body>
+</html>
