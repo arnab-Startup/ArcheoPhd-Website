@@ -29,17 +29,19 @@ namespace fs = std::filesystem;
 #define IDR_WEBVIEW2_DLL   102
 
 // Control IDs
-#define IDC_INSTALL_PATH_EDIT     1001
-#define IDC_INSTALL_PATH_BROWSE   1002
-#define IDC_DATA_PATH_EDIT        1003
-#define IDC_DATA_PATH_BROWSE      1004
-#define IDC_DRIVE_COMBO           1005
-#define IDC_DESKTOP_SHORTCUT_CHK  1006
-#define IDC_STARTMENU_SHORTCUT_CHK 1007
-#define IDC_INSTALL_BTN           1009
-#define IDC_CANCEL_BTN            1010
-#define IDC_PROGRESS_BAR          1011
-#define IDC_STATUS_LABEL          1012
+#define IDC_INSTALL_PATH_EDIT      1001
+#define IDC_INSTALL_PATH_BROWSE    1002
+#define IDC_MODELS_DRIVE_COMBO     1003
+#define IDC_MODELS_PATH_EDIT       1004
+#define IDC_MODELS_PATH_BROWSE     1005
+#define IDC_PROJECTS_PATH_EDIT     1006
+#define IDC_PROJECTS_PATH_BROWSE   1007
+#define IDC_DESKTOP_SHORTCUT_CHK   1008
+#define IDC_STARTMENU_SHORTCUT_CHK 1009
+#define IDC_PROGRESS_BAR           1010
+#define IDC_STATUS_LABEL           1011
+#define IDC_INSTALL_BTN            1012
+#define IDC_CANCEL_BTN             1013
 
 struct DriveInfo {
     std::wstring root;
@@ -51,9 +53,11 @@ struct DriveInfo {
 HWND g_hWnd = NULL;
 HWND g_hInstallEdit = NULL;
 HWND g_hInstallBrowse = NULL;
-HWND g_hDataEdit = NULL;
-HWND g_hDataBrowse = NULL;
-HWND g_hDriveCombo = NULL;
+HWND g_hModelsDriveCombo = NULL;
+HWND g_hModelsEdit = NULL;
+HWND g_hModelsBrowse = NULL;
+HWND g_hProjectsEdit = NULL;
+HWND g_hProjectsBrowse = NULL;
 HWND g_hDesktopChk = NULL;
 HWND g_hStartMenuChk = NULL;
 HWND g_hInstallBtn = NULL;
@@ -67,8 +71,9 @@ HFONT g_hFontNormal = NULL;
 HFONT g_hFontSmall = NULL;
 
 std::vector<DriveInfo> g_drives;
-std::wstring g_defaultDataRoot;
 std::wstring g_defaultInstallDir;
+std::wstring g_defaultModelsDir;
+std::wstring g_defaultProjectsDir;
 std::atomic<bool> g_isInstalling(false);
 std::atomic<bool> g_installComplete(false);
 
@@ -166,12 +171,15 @@ void RunInstallationThread() {
     g_isInstalling = true;
 
     wchar_t installDirBuf[MAX_PATH] = { 0 };
-    wchar_t dataDirBuf[MAX_PATH] = { 0 };
+    wchar_t modelsDirBuf[MAX_PATH] = { 0 };
+    wchar_t projectsDirBuf[MAX_PATH] = { 0 };
     GetWindowTextW(g_hInstallEdit, installDirBuf, MAX_PATH);
-    GetWindowTextW(g_hDataEdit, dataDirBuf, MAX_PATH);
+    GetWindowTextW(g_hModelsEdit, modelsDirBuf, MAX_PATH);
+    GetWindowTextW(g_hProjectsEdit, projectsDirBuf, MAX_PATH);
 
     std::wstring installDir = installDirBuf;
-    std::wstring dataDir = dataDirBuf;
+    std::wstring modelsDir = modelsDirBuf;
+    std::wstring projectsDir = projectsDirBuf;
     bool createDesktop = (SendMessage(g_hDesktopChk, BM_GETCHECK, 0, 0) == BST_CHECKED);
     bool createStartMenu = (SendMessage(g_hStartMenuChk, BM_GETCHECK, 0, 0) == BST_CHECKED);
 
@@ -181,14 +189,14 @@ void RunInstallationThread() {
     };
 
     try {
-        setStatus(L"Creating installation directories...", 15);
+        setStatus(L"Step 1/5: Creating target directories...", 15);
         fs::create_directories(installDir);
-        fs::create_directories(dataDir + L"\\models\\llm");
-        fs::create_directories(dataDir + L"\\models\\embedding");
-        fs::create_directories(dataDir + L"\\projects");
+        fs::create_directories(modelsDir + L"\\llm");
+        fs::create_directories(modelsDir + L"\\embedding");
+        fs::create_directories(projectsDir);
 
         Sleep(250);
-        setStatus(L"Extracting ArchaeoPhD native workstation engine...", 40);
+        setStatus(L"Step 2/5: Extracting core application to C: drive...", 40);
 
         std::wstring exeDst = installDir + L"\\ArchaeoPhD.exe";
         bool extractedExe = ExtractResourceToFile(IDR_ARCHAEOPHD_EXE, exeDst);
@@ -210,7 +218,7 @@ void RunInstallationThread() {
         }
 
         Sleep(200);
-        setStatus(L"Extracting WebView2 dynamic runtime loader...", 65);
+        setStatus(L"Step 3/5: Installing WebView2 dynamic dependencies...", 60);
 
         std::wstring dllDst = installDir + L"\\WebView2Loader.dll";
         bool extractedDll = ExtractResourceToFile(IDR_WEBVIEW2_DLL, dllDst);
@@ -231,16 +239,26 @@ void RunInstallationThread() {
         }
 
         Sleep(200);
-        setStatus(L"Configuring Research Data Root & local model storage...", 80);
+        setStatus(L"Step 4/5: Configuring AI Models & Research Workspace paths...", 80);
 
-        // Write config file into install directory and data root
+        // Helper to escape backslashes for JSON
+        auto escapeJsonPath = [](const std::wstring& p) {
+            std::wstring res;
+            for (wchar_t c : p) {
+                if (c == L'\\') res += L"\\\\";
+                else res += c;
+            }
+            return res;
+        };
+
+        // Write central configuration
         std::wofstream cfgFile((installDir + L"\\archaeophd.config.json").c_str());
         if (cfgFile.is_open()) {
             cfgFile << L"{\n";
             cfgFile << L"  \"version\": \"1.0.0\",\n";
-            cfgFile << L"  \"dataPath\": \"" << dataDir << L"\",\n";
-            cfgFile << L"  \"modelsDir\": \"" << dataDir << L"\\\\models\",\n";
-            cfgFile << L"  \"projectsDir\": \"" << dataDir << L"\\\\projects\"\n";
+            cfgFile << L"  \"installPath\": \"" << escapeJsonPath(installDir) << L"\",\n";
+            cfgFile << L"  \"modelsPath\": \"" << escapeJsonPath(modelsDir) << L"\",\n";
+            cfgFile << L"  \"projectsPath\": \"" << escapeJsonPath(projectsDir) << L"\"\n";
             cfgFile << L"}\n";
             cfgFile.close();
         }
@@ -248,8 +266,8 @@ void RunInstallationThread() {
         // Link existing repo models if present on this workstation
         std::wstring repoLlm = L"D:\\Prorgram\\Project\\ArcheoPhd\\desktop\\models\\llm\\Qwen2.5-7B-Instruct-Q4_K_M.gguf";
         std::wstring repoEmb = L"D:\\Prorgram\\Project\\ArcheoPhd\\desktop\\models\\embedding\\nomic-embed-text-v1.5.Q4_K_M.gguf";
-        std::wstring targetLlm = dataDir + L"\\models\\llm\\Qwen2.5-7B-Instruct-Q4_K_M.gguf";
-        std::wstring targetEmb = dataDir + L"\\models\\embedding\\nomic-embed-text-v1.5.Q4_K_M.gguf";
+        std::wstring targetLlm = modelsDir + L"\\llm\\Qwen2.5-7B-Instruct-Q4_K_M.gguf";
+        std::wstring targetEmb = modelsDir + L"\\embedding\\nomic-embed-text-v1.5.Q4_K_M.gguf";
 
         if (!fs::exists(targetLlm) && fs::exists(repoLlm)) {
             setStatus(L"Linking offline neural reasoning model (Qwen 7B)...", 85);
@@ -260,7 +278,7 @@ void RunInstallationThread() {
             try { fs::copy_file(repoEmb, targetEmb, fs::copy_options::overwrite_existing); } catch(...) {}
         }
 
-        setStatus(L"Creating Windows application shortcuts...", 95);
+        setStatus(L"Step 5/5: Creating Windows application shortcuts...", 95);
         if (createDesktop) {
             wchar_t desktopPath[MAX_PATH] = { 0 };
             if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_DESKTOPDIRECTORY, NULL, 0, desktopPath))) {
@@ -278,7 +296,7 @@ void RunInstallationThread() {
         }
 
         Sleep(200);
-        setStatus(L"Installation complete! ArchaeoPhD is ready to launch.", 100);
+        setStatus(L"Installation complete! ArchaeoPhD is configured and ready.", 100);
         g_installComplete = true;
     }
     catch (const std::exception& ex) {
@@ -301,8 +319,8 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     case WM_CREATE: {
         // Create Fonts
         g_hFontTitle = CreateFontW(22, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Segoe UI");
-        g_hFontBold = CreateFontW(15, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Segoe UI");
-        g_hFontNormal = CreateFontW(14, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Segoe UI");
+        g_hFontBold = CreateFontW(14, 0, 0, 0, FW_SEMIBOLD, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Segoe UI");
+        g_hFontNormal = CreateFontW(13, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Segoe UI");
         g_hFontSmall = CreateFontW(12, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE, DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS, CLEARTYPE_QUALITY, DEFAULT_PITCH, L"Segoe UI");
 
         // Enumerate drives to find the one with the most space
@@ -316,43 +334,53 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             }
         }
 
-        // Set Default Paths
+        // Tier 1 Default: Core App on C: drive (%LOCALAPPDATA%\ArchaeoPhD)
         wchar_t localApp[MAX_PATH] = { 0 };
         SHGetFolderPathW(NULL, CSIDL_LOCAL_APPDATA, NULL, 0, localApp);
         g_defaultInstallDir = std::wstring(localApp) + L"\\ArchaeoPhD";
-        g_defaultDataRoot = bestRoot + L"ArchaeoPhD-Data";
 
-        // Title & Header
-        HWND hTitle = CreateWindowW(L"STATIC", L"ArchaeoPhD Desktop Workstation Setup", WS_CHILD | WS_VISIBLE, 24, 18, 540, 28, hWnd, NULL, NULL, NULL);
+        // Tier 2 Default: AI Models on drive with most free space (e.g. D:\ArchaeoPhD\models)
+        g_defaultModelsDir = bestRoot + L"ArchaeoPhD\\models";
+
+        // Tier 3 Default: Research Projects in User's Documents
+        wchar_t docsPath[MAX_PATH] = { 0 };
+        SHGetFolderPathW(NULL, CSIDL_MYDOCUMENTS, NULL, 0, docsPath);
+        g_defaultProjectsDir = std::wstring(docsPath) + L"\\ArchaeoPhD-Projects";
+
+        // Header
+        HWND hTitle = CreateWindowW(L"STATIC", L"ArchaeoPhD Workstation Setup", WS_CHILD | WS_VISIBLE, 24, 16, 560, 26, hWnd, NULL, NULL, NULL);
         SendMessage(hTitle, WM_SETFONT, (WPARAM)g_hFontTitle, TRUE);
 
-        HWND hSub = CreateWindowW(L"STATIC", L"Evidence-Traceable AI Research Workspace for Archaeology", WS_CHILD | WS_VISIBLE, 24, 48, 540, 20, hWnd, NULL, NULL, NULL);
+        HWND hSub = CreateWindowW(L"STATIC", L"Customize where the application basics, heavy AI models, and research projects live.", WS_CHILD | WS_VISIBLE, 24, 44, 560, 18, hWnd, NULL, NULL, NULL);
         SendMessage(hSub, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
 
-        // Section 1: Application Files
-        HWND hLbl1 = CreateWindowW(L"STATIC", L"1. Application Installation Directory (~15 MB):", WS_CHILD | WS_VISIBLE, 24, 82, 350, 18, hWnd, NULL, NULL, NULL);
+        // -------------------------------------------------------------
+        // TIER 1: Core Application Basics (C: Drive)
+        // -------------------------------------------------------------
+        HWND hLbl1 = CreateWindowW(L"STATIC", L"1. Application Basics (~15 MB) \x2014 C: Drive", WS_CHILD | WS_VISIBLE, 24, 72, 450, 18, hWnd, NULL, NULL, NULL);
         SendMessage(hLbl1, WM_SETFONT, (WPARAM)g_hFontBold, TRUE);
 
-        g_hInstallEdit = CreateWindowExW(WS_EX_CLIENTEDGE, L"EDIT", g_defaultInstallDir.c_str(), WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, 24, 104, 430, 26, hWnd, (HMENU)IDC_INSTALL_PATH_EDIT, NULL, NULL);
+        g_hInstallEdit = CreateWindowExW(WS_EX_CLIENTEDGE, L"EDIT", g_defaultInstallDir.c_str(), WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, 24, 92, 450, 24, hWnd, (HMENU)IDC_INSTALL_PATH_EDIT, NULL, NULL);
         SendMessage(g_hInstallEdit, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
 
-        g_hInstallBrowse = CreateWindowW(L"BUTTON", L"Browse...", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 464, 104, 90, 26, hWnd, (HMENU)IDC_INSTALL_PATH_BROWSE, NULL, NULL);
+        g_hInstallBrowse = CreateWindowW(L"BUTTON", L"Browse...", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 482, 92, 85, 24, hWnd, (HMENU)IDC_INSTALL_PATH_BROWSE, NULL, NULL);
         SendMessage(g_hInstallBrowse, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
 
-        HWND hTip1 = CreateWindowW(L"STATIC", L"Installs native C++ engine, UI workstation, and WebView2 runtime loader.", WS_CHILD | WS_VISIBLE, 24, 134, 530, 16, hWnd, NULL, NULL, NULL);
+        HWND hTip1 = CreateWindowW(L"STATIC", L"Standard Windows program directory for C++ engine & WebView2 UI runtime.", WS_CHILD | WS_VISIBLE, 24, 118, 540, 15, hWnd, NULL, NULL, NULL);
         SendMessage(hTip1, WM_SETFONT, (WPARAM)g_hFontSmall, TRUE);
 
-        // Section 2: Research Data & Models Root (4.8 GB)
-        HWND hLbl2 = CreateWindowW(L"STATIC", L"2. Research Data & Offline AI Models Root (~4.8 GB):", WS_CHILD | WS_VISIBLE, 24, 160, 480, 18, hWnd, NULL, NULL, NULL);
+        // -------------------------------------------------------------
+        // TIER 2: AI Neural Models Storage (~4.5 GB)
+        // -------------------------------------------------------------
+        HWND hLbl2 = CreateWindowW(L"STATIC", L"2. AI Models & Neural Weights Storage (~4.5 GB)", WS_CHILD | WS_VISIBLE, 24, 142, 450, 18, hWnd, NULL, NULL, NULL);
         SendMessage(hLbl2, WM_SETFONT, (WPARAM)g_hFontBold, TRUE);
 
-        HWND hDesc2 = CreateWindowW(L"STATIC", L"Choose storage drive for 7B neural weights, embeddings, and research projects:", WS_CHILD | WS_VISIBLE, 24, 180, 530, 16, hWnd, NULL, NULL, NULL);
+        HWND hDesc2 = CreateWindowW(L"STATIC", L"Select storage drive for 7B Qwen LLM weights and vector embedding index:", WS_CHILD | WS_VISIBLE, 24, 160, 540, 15, hWnd, NULL, NULL, NULL);
         SendMessage(hDesc2, WM_SETFONT, (WPARAM)g_hFontSmall, TRUE);
 
-        g_hDriveCombo = CreateWindowW(L"COMBOBOX", L"", WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST | WS_VSCROLL, 24, 202, 430, 160, hWnd, (HMENU)IDC_DRIVE_COMBO, NULL, NULL);
-        SendMessage(g_hDriveCombo, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
+        g_hModelsDriveCombo = CreateWindowW(L"COMBOBOX", L"", WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST | WS_VSCROLL, 24, 178, 450, 160, hWnd, (HMENU)IDC_MODELS_DRIVE_COMBO, NULL, NULL);
+        SendMessage(g_hModelsDriveCombo, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
 
-        // Populate Drives Combo
         int selectIdx = 0;
         int idx = 0;
         for (const auto& d : g_drives) {
@@ -362,41 +390,62 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                 ss << L"  [RECOMMENDED - Spacious]";
                 selectIdx = idx;
             } else if (d.freeGB < 15.0) {
-                ss << L"  [Low Free Space]";
+                ss << L"  [Low Space]";
             }
-            SendMessage(g_hDriveCombo, CB_ADDSTRING, 0, (LPARAM)ss.str().c_str());
+            SendMessage(g_hModelsDriveCombo, CB_ADDSTRING, 0, (LPARAM)ss.str().c_str());
             idx++;
         }
-        SendMessage(g_hDriveCombo, CB_SETCURSEL, selectIdx, 0);
+        SendMessage(g_hModelsDriveCombo, CB_SETCURSEL, selectIdx, 0);
 
-        g_hDataEdit = CreateWindowExW(WS_EX_CLIENTEDGE, L"EDIT", g_defaultDataRoot.c_str(), WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, 24, 236, 430, 26, hWnd, (HMENU)IDC_DATA_PATH_EDIT, NULL, NULL);
-        SendMessage(g_hDataEdit, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
+        g_hModelsEdit = CreateWindowExW(WS_EX_CLIENTEDGE, L"EDIT", g_defaultModelsDir.c_str(), WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, 24, 206, 450, 24, hWnd, (HMENU)IDC_MODELS_PATH_EDIT, NULL, NULL);
+        SendMessage(g_hModelsEdit, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
 
-        g_hDataBrowse = CreateWindowW(L"BUTTON", L"Browse...", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 464, 236, 90, 26, hWnd, (HMENU)IDC_DATA_PATH_BROWSE, NULL, NULL);
-        SendMessage(g_hDataBrowse, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
+        g_hModelsBrowse = CreateWindowW(L"BUTTON", L"Browse...", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 482, 206, 85, 24, hWnd, (HMENU)IDC_MODELS_PATH_BROWSE, NULL, NULL);
+        SendMessage(g_hModelsBrowse, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
 
-        // Checkboxes
-        g_hDesktopChk = CreateWindowW(L"BUTTON", L"Create Desktop shortcut", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX, 24, 274, 250, 20, hWnd, (HMENU)IDC_DESKTOP_SHORTCUT_CHK, NULL, NULL);
+        // -------------------------------------------------------------
+        // TIER 3: Research Workspace & Projects
+        // -------------------------------------------------------------
+        HWND hLbl3 = CreateWindowW(L"STATIC", L"3. Research Workspace & Project Library (Field Reports & Studies)", WS_CHILD | WS_VISIBLE, 24, 238, 540, 18, hWnd, NULL, NULL, NULL);
+        SendMessage(hLbl3, WM_SETFONT, (WPARAM)g_hFontBold, TRUE);
+
+        g_hProjectsEdit = CreateWindowExW(WS_EX_CLIENTEDGE, L"EDIT", g_defaultProjectsDir.c_str(), WS_CHILD | WS_VISIBLE | ES_AUTOHSCROLL, 24, 258, 450, 24, hWnd, (HMENU)IDC_PROJECTS_PATH_EDIT, NULL, NULL);
+        SendMessage(g_hProjectsEdit, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
+
+        g_hProjectsBrowse = CreateWindowW(L"BUTTON", L"Browse...", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 482, 258, 85, 24, hWnd, (HMENU)IDC_PROJECTS_PATH_BROWSE, NULL, NULL);
+        SendMessage(g_hProjectsBrowse, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
+
+        HWND hTip3 = CreateWindowW(L"STATIC", L"Where your Harris matrices, C-14 records, and notes are saved. Safe for cloud sync.", WS_CHILD | WS_VISIBLE, 24, 284, 540, 15, hWnd, NULL, NULL, NULL);
+        SendMessage(hTip3, WM_SETFONT, (WPARAM)g_hFontSmall, TRUE);
+
+        // -------------------------------------------------------------
+        // Shortcuts
+        // -------------------------------------------------------------
+        g_hDesktopChk = CreateWindowW(L"BUTTON", L"Create Desktop shortcut", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX, 24, 308, 220, 20, hWnd, (HMENU)IDC_DESKTOP_SHORTCUT_CHK, NULL, NULL);
         SendMessage(g_hDesktopChk, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
         SendMessage(g_hDesktopChk, BM_SETCHECK, BST_CHECKED, 0);
 
-        g_hStartMenuChk = CreateWindowW(L"BUTTON", L"Create Start Menu shortcut", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX, 280, 274, 250, 20, hWnd, (HMENU)IDC_STARTMENU_SHORTCUT_CHK, NULL, NULL);
+        g_hStartMenuChk = CreateWindowW(L"BUTTON", L"Create Start Menu shortcut", WS_CHILD | WS_VISIBLE | BS_AUTOCHECKBOX, 260, 308, 220, 20, hWnd, (HMENU)IDC_STARTMENU_SHORTCUT_CHK, NULL, NULL);
         SendMessage(g_hStartMenuChk, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
         SendMessage(g_hStartMenuChk, BM_SETCHECK, BST_CHECKED, 0);
 
+        // -------------------------------------------------------------
         // Progress Bar & Status
-        g_hProgressBar = CreateWindowW(PROGRESS_CLASSW, L"", WS_CHILD | WS_VISIBLE | PBS_SMOOTH, 24, 312, 530, 18, hWnd, (HMENU)IDC_PROGRESS_BAR, NULL, NULL);
+        // -------------------------------------------------------------
+        g_hProgressBar = CreateWindowW(PROGRESS_CLASSW, L"", WS_CHILD | WS_VISIBLE | PBS_SMOOTH, 24, 340, 543, 16, hWnd, (HMENU)IDC_PROGRESS_BAR, NULL, NULL);
         SendMessage(g_hProgressBar, PBM_SETRANGE32, 0, 100);
         SendMessage(g_hProgressBar, PBM_SETPOS, 0, 0);
 
-        g_hStatusLabel = CreateWindowW(L"STATIC", L"Ready to install. Click Install to begin.", WS_CHILD | WS_VISIBLE, 24, 336, 530, 20, hWnd, (HMENU)IDC_STATUS_LABEL, NULL, NULL);
+        g_hStatusLabel = CreateWindowW(L"STATIC", L"Ready to install. Click Install to begin.", WS_CHILD | WS_VISIBLE, 24, 362, 543, 18, hWnd, (HMENU)IDC_STATUS_LABEL, NULL, NULL);
         SendMessage(g_hStatusLabel, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
 
+        // -------------------------------------------------------------
         // Action Buttons
-        g_hInstallBtn = CreateWindowW(L"BUTTON", L"Install", WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON, 360, 375, 104, 32, hWnd, (HMENU)IDC_INSTALL_BTN, NULL, NULL);
+        // -------------------------------------------------------------
+        g_hInstallBtn = CreateWindowW(L"BUTTON", L"Install", WS_CHILD | WS_VISIBLE | BS_DEFPUSHBUTTON, 360, 396, 115, 32, hWnd, (HMENU)IDC_INSTALL_BTN, NULL, NULL);
         SendMessage(g_hInstallBtn, WM_SETFONT, (WPARAM)g_hFontBold, TRUE);
 
-        g_hCancelBtn = CreateWindowW(L"BUTTON", L"Cancel", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 474, 375, 80, 32, hWnd, (HMENU)IDC_CANCEL_BTN, NULL, NULL);
+        g_hCancelBtn = CreateWindowW(L"BUTTON", L"Cancel", WS_CHILD | WS_VISIBLE | BS_PUSHBUTTON, 485, 396, 82, 32, hWnd, (HMENU)IDC_CANCEL_BTN, NULL, NULL);
         SendMessage(g_hCancelBtn, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
 
         break;
@@ -405,22 +454,28 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     case WM_COMMAND: {
         int id = LOWORD(wParam);
         if (id == IDC_INSTALL_PATH_BROWSE) {
-            std::wstring folder = BrowseForFolder(hWnd, L"Select Program Installation Directory");
+            std::wstring folder = BrowseForFolder(hWnd, L"Select Application Installation Directory (C: Drive)");
             if (!folder.empty()) {
                 SetWindowTextW(g_hInstallEdit, folder.c_str());
             }
         }
-        else if (id == IDC_DATA_PATH_BROWSE) {
-            std::wstring folder = BrowseForFolder(hWnd, L"Select Research Data & Models Root Directory");
+        else if (id == IDC_MODELS_PATH_BROWSE) {
+            std::wstring folder = BrowseForFolder(hWnd, L"Select AI Models & Neural Weights Storage Directory");
             if (!folder.empty()) {
-                SetWindowTextW(g_hDataEdit, folder.c_str());
+                SetWindowTextW(g_hModelsEdit, folder.c_str());
             }
         }
-        else if (id == IDC_DRIVE_COMBO && HIWORD(wParam) == CBN_SELCHANGE) {
-            int sel = SendMessage(g_hDriveCombo, CB_GETCURSEL, 0, 0);
+        else if (id == IDC_PROJECTS_PATH_BROWSE) {
+            std::wstring folder = BrowseForFolder(hWnd, L"Select Research Workspace & Projects Directory");
+            if (!folder.empty()) {
+                SetWindowTextW(g_hProjectsEdit, folder.c_str());
+            }
+        }
+        else if (id == IDC_MODELS_DRIVE_COMBO && HIWORD(wParam) == CBN_SELCHANGE) {
+            int sel = SendMessage(g_hModelsDriveCombo, CB_GETCURSEL, 0, 0);
             if (sel >= 0 && sel < (int)g_drives.size()) {
-                std::wstring newPath = g_drives[sel].root + L"ArchaeoPhD-Data";
-                SetWindowTextW(g_hDataEdit, newPath.c_str());
+                std::wstring newPath = g_drives[sel].root + L"ArchaeoPhD\\models";
+                SetWindowTextW(g_hModelsEdit, newPath.c_str());
             }
         }
         else if (id == IDC_INSTALL_BTN) {
@@ -436,9 +491,11 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                 // Disable controls during installation
                 EnableWindow(g_hInstallEdit, FALSE);
                 EnableWindow(g_hInstallBrowse, FALSE);
-                EnableWindow(g_hDataEdit, FALSE);
-                EnableWindow(g_hDataBrowse, FALSE);
-                EnableWindow(g_hDriveCombo, FALSE);
+                EnableWindow(g_hModelsDriveCombo, FALSE);
+                EnableWindow(g_hModelsEdit, FALSE);
+                EnableWindow(g_hModelsBrowse, FALSE);
+                EnableWindow(g_hProjectsEdit, FALSE);
+                EnableWindow(g_hProjectsBrowse, FALSE);
                 EnableWindow(g_hDesktopChk, FALSE);
                 EnableWindow(g_hStartMenuChk, FALSE);
                 EnableWindow(g_hInstallBtn, FALSE);
@@ -494,8 +551,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int nCmdShow) {
     // Center window on screen
     int screenW = GetSystemMetrics(SM_CXSCREEN);
     int screenH = GetSystemMetrics(SM_CYSCREEN);
-    int winW = 600;
-    int winH = 465;
+    int winW = 615;
+    int winH = 485;
     int winX = (screenW - winW) / 2;
     int winY = (screenH - winH) / 2;
 
