@@ -33,11 +33,20 @@ const server = http.createServer((req, res) => {
 
     const ext = path.extname(filePath).toLowerCase();
     const contentType = MIME[ext] || 'application/octet-stream';
-    res.writeHead(200, {
+    const filename = path.basename(filePath);
+    const headers = {
       'Content-Type': contentType,
       'Content-Length': stats.size,
       'Access-Control-Allow-Origin': '*'
-    });
+    };
+
+    const isDownload = reqPath.startsWith('/downloads/') || ext === '.exe' || ext === '.zip';
+    if (isDownload) {
+      headers['Content-Disposition'] = `attachment; filename="${filename}"`;
+      headers['Cache-Control'] = 'no-store, no-cache, must-revalidate';
+    }
+
+    res.writeHead(200, headers);
     fs.createReadStream(filePath).pipe(res);
   });
 });

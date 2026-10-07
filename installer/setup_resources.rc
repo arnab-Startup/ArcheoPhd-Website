@@ -1,0 +1,5 @@
+#define IDR_ARCHAEOPHD_EXE 101
+#define IDR_WEBVIEW2_DLL   102
+
+IDR_ARCHAEOPHD_EXE RCDATA "../../desktop/release/ArchaeoPhD.exe"
+IDR_WEBVIEW2_DLL   RCDATA "../../desktop/release/WebView2Loader.dll"

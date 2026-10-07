@@ -6,3 +6,4 @@ Desktop.ini
 # Temporary files & logs
 *.log
 *.tmp
+*.o
