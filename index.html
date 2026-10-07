@@ -657,52 +657,53 @@
        MODAL: OFFLINE FIELDWORK PACK & SIZE DETAILS
        ========================================================================= -->
   <div class="modal-overlay" id="modal-offline-pack">
-    <div class="modal-box">
+    <div class="modal-box" style="max-width: 640px;">
       <button class="modal-close" aria-label="Close modal">&times;</button>
       <div style="display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1rem;">
         <div style="width: 36px; height: 36px; border-radius: 8px; background: rgba(194,94,46,0.15); color: var(--primary-amber); display: grid; place-items: center;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
         </div>
-        <h3 style="font-size: 1.35rem; color: #ffffff;">Offline Fieldwork Bundle Details</h3>
+        <h3 style="font-size: 1.35rem; color: #ffffff;">Offline Fieldwork Bundle (4.85 GB)</h3>
       </div>
 
-      <p class="text-muted" style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
-        The offline fieldwork bundle is designed for research teams deploying to excavation sites without internet access. It packages the native engine together with calibrated curves and quantized model weights.
+      <p class="text-muted" style="font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.25rem;">
+        Designed for excavation field camps, lab computers, and laptops deployed without internet. Download individual offline components or copy them directly to external USB media:
       </p>
 
-      <div style="background: rgba(8,12,20,0.7); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.5rem;">
-        <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.75rem;">Archive Manifest Breakdown</div>
-        <ul style="list-style: none; font-size: 0.85rem; display: flex; flex-direction: column; gap: 0.5rem;">
-          <li style="display: flex; justify-content: space-between;">
-            <span>1. ArchaeoPhD Win32 C++ Executable</span>
-            <span class="text-emerald">9.52 MB</span>
+      <div style="background: rgba(8,12,20,0.7); border: 1px solid var(--border); border-radius: var(--radius-sm); padding: 1.25rem; margin-bottom: 1.25rem;">
+        <div style="font-size: 0.8rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim); margin-bottom: 0.75rem;">Direct Component Downloads</div>
+        <ul style="list-style: none; font-size: 0.88rem; display: flex; flex-direction: column; gap: 0.75rem; margin: 0; padding: 0;">
+          <li style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.6rem;">
+            <div>
+              <div style="font-weight: 600; color: #ffffff;">1. ArchaeoPhD C++ Engine & Setup</div>
+              <div style="font-size: 0.78rem; color: var(--text-dim);">Win32 executable + WebView2 loader</div>
+            </div>
+            <a href="downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" class="btn btn-outline btn-sm" style="font-size: 0.78rem;">Download (10.3 MB)</a>
           </li>
-          <li style="display: flex; justify-content: space-between;">
-            <span>2. nomic-embed-text-v1.5 Embedding GGUF</span>
-            <span class="text-cyan">84.1 MB</span>
+          <li style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.6rem;">
+            <div>
+              <div style="font-weight: 600; color: #ffffff;">2. Qwen 2.5 7B Reasoning Model</div>
+              <div style="font-size: 0.78rem; color: var(--text-dim);">Quantized offline GGUF weights (Q4_K_M)</div>
+            </div>
+            <a href="models/llm/Qwen2.5-7B-Instruct-Q4_K_M.gguf" download="Qwen2.5-7B-Instruct-Q4_K_M.gguf" class="btn btn-primary btn-sm" style="font-size: 0.78rem;">Download (4.68 GB)</a>
           </li>
-          <li style="display: flex; justify-content: space-between;">
-            <span>3. Qwen2.5-7B-Instruct Reasoning GGUF</span>
-            <span class="text-amber">4.68 GB</span>
-          </li>
-          <li style="display: flex; justify-content: space-between;">
-            <span>4. IntCal20 & SHCal20 Calibration Splines</span>
-            <span class="text-muted">110 KB</span>
-          </li>
-          <li style="display: flex; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 0.5rem; font-weight: 700;">
-            <span>Total Uncompressed Size:</span>
-            <span class="text-amber">~4.85 GB</span>
+          <li style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.06); padding-bottom: 0.6rem;">
+            <div>
+              <div style="font-weight: 600; color: #ffffff;">3. Nomic Embeddings Model</div>
+              <div style="font-size: 0.78rem; color: var(--text-dim);">High-dimensional vector embedding index</div>
+            </div>
+            <a href="models/embedding/nomic-embed-text-v1.5.Q4_K_M.gguf" download="nomic-embed-text-v1.5.Q4_K_M.gguf" class="btn btn-outline btn-sm" style="font-size: 0.78rem;">Download (84.1 MB)</a>
           </li>
         </ul>
       </div>
 
+      <div style="background: rgba(194,94,46,0.1); border: 1px solid rgba(194,94,46,0.25); border-radius: var(--radius-sm); padding: 0.9rem; margin-bottom: 1.25rem; font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">
+        <strong style="color: var(--primary-amber);">Where to save models:</strong> Place downloaded <code>.gguf</code> files into <code>D:\ArchaeoPhD\models\llm\</code> and <code>D:\ArchaeoPhD\models\embedding\</code>, or run <a href="downloads/install.ps1" download="install.ps1" style="color: var(--primary-amber); text-decoration: underline;">install.ps1</a> to auto-link them.
+      </div>
+
       <div style="display: flex; gap: 0.75rem; justify-content: flex-end;">
-        <a href="downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" class="btn btn-primary btn-sm">
-          Download Web Installer (9.5 MB)
-        </a>
-        <a href="downloads/manifest.json" target="_blank" class="btn btn-outline btn-sm">
-          Inspect Manifest
-        </a>
+        <button class="btn btn-outline btn-sm modal-close">Close</button>
+        <a href="downloads/checksums.sha256" target="_blank" class="btn btn-outline btn-sm">SHA-256 Hashes</a>
       </div>
     </div>
   </div>

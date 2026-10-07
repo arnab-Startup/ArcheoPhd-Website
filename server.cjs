@@ -47,7 +47,7 @@ const server = http.createServer((req, res) => {
       'Access-Control-Allow-Origin': '*'
     };
 
-    const isDownload = reqPath.startsWith('/downloads/') || ext === '.exe' || ext === '.zip';
+    const isDownload = reqPath.startsWith('/downloads/') || reqPath.startsWith('/models/') || ext === '.exe' || ext === '.zip' || ext === '.gguf';
     if (isDownload) {
       headers['Content-Disposition'] = `attachment; filename="${filename}"`;
       headers['Cache-Control'] = 'no-store, no-cache, must-revalidate';
