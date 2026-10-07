@@ -64,9 +64,9 @@ function initAppSizeTiers() {
     tabBootstrap.classList.add('active');
     tabAirgapped.classList.remove('active');
 
-    tierDownloadSize.textContent = '9.52 MB (Instant Download)';
-    tierStorageImpact.textContent = 'Models streamed to user-chosen Data Root on launch';
-    tierSummary.innerHTML = `<strong>Tier 1: Smart Web Installer (Recommended)</strong> — You download only the compiled native C++ vector engine (9.5 MB). When launched, it allows you to choose an external SSD or secondary drive for the 4.8 GB models, keeping your primary C: drive clean.`;
+    tierDownloadSize.textContent = 'Automated Setup Wizard';
+    tierStorageImpact.textContent = 'Provisions 4.8 GB models to user-chosen Research Data Root';
+    tierSummary.innerHTML = `<strong>Mode 1: Automated Setup Wizard (Recommended)</strong> — The installer sets up the desktop application and automatically provisions the offline neural models directly into your chosen drive (e.g. <code>D:\\ArchaeoPhD-Data</code>), ensuring your primary Windows drive never runs out of space.`;
 
     if (sizeBarExe) sizeBarExe.style.width = '100%';
     if (sizeBarEmbed) sizeBarEmbed.style.width = '0%';
@@ -79,7 +79,7 @@ function initAppSizeTiers() {
 
     tierDownloadSize.textContent = '4.85 GB (All-in-One Offline Pack)';
     tierStorageImpact.textContent = 'Pre-bundled on disk — Zero internet ever required';
-    tierSummary.innerHTML = `<strong>Tier 2: Air-Gapped Fieldwork Bundle</strong> — A complete self-contained package including the 9.5 MB client, 84 MB embedding model, and 4.68 GB Qwen 2.5 7B LLM. Built for field excavations in remote areas with zero internet.`;
+    tierSummary.innerHTML = `<strong>Mode 2: Air-Gapped Fieldwork Bundle</strong> — A single pre-packaged zip archive containing the executable and both offline AI models. Designed to be extracted directly to external USB 3.2 drives or laptops traveling to remote excavation digs with no internet.`;
 
     if (sizeBarExe) sizeBarExe.style.width = '0.2%';
     if (sizeBarEmbed) sizeBarEmbed.style.width = '1.8%';

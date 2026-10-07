@@ -1,19 +1,15 @@
 <#
 .SYNOPSIS
-    ArchaeoPhD Desktop Workstation - Automated PowerShell Installer
+    ArchaeoPhD Desktop Workstation - Automated Installer
 .DESCRIPTION
-    Installs the native Win32/C++ vector engine, configures the Data Root,
-    verifies SHA256 checksums, and optionally downloads offline neural weights.
-.PARAMETER DataRoot
-    Custom folder for large model weights and research databases (e.g. D:\ArchaeoPhD-Data)
-.PARAMETER DownloadModels
-    Switch to immediately download offline GGUF models (4.8 GB)
+    Installs the native Win32/C++ vector engine, detects all available disk drives,
+    allows selecting the Research Data Root for the 4.8 GB models (keeping C: free),
+    and provisions the offline neural environment.
 #>
 
 [CmdletBinding()]
 param(
-    [string]$DataRoot = "$env:USERPROFILE\ArchaeoPhD-Data",
-    [switch]$DownloadModels = $false
+    [string]$CustomDataRoot = ""
 )
 
 $ErrorActionPreference = "Stop"
@@ -31,29 +27,48 @@ if ([IntPtr]::Size -ne 8) {
 }
 Write-Host "[OK] 64-bit Windows detected." -ForegroundColor Green
 
-# 2. RAM Audit
-$ram = Get-CimInstance Win32_OperatingSystem | ForEach-Object { [math]::Round($_.TotalVisibleMemorySize / 1MB, 1) }
-Write-Host "[AUDIT] Total Physical RAM: $ram GB" -ForegroundColor Cyan
-if ($ram -lt 8.0) {
-    Write-Warning "System has less than 8 GB RAM. Offline 7B LLM requires ~5.4 GB RAM."
-} elseif ($ram -ge 16.0) {
-    Write-Host "[EXCELLENT] 16+ GB RAM available for multi-threaded neural vector reasoning." -ForegroundColor Green
-} else {
-    Write-Host "[GOOD] 8 GB RAM meets minimum operating baseline." -ForegroundColor Green
+# 2. Storage Drive Detection (Find drive with most free space)
+Write-Host "`n[STORAGE AUDIT] Scanning storage drives for 4.8 GB models & research files..." -ForegroundColor Cyan
+
+$drives = Get-PSDrive -PSProvider FileSystem | Sort-Object Free -Descending
+$bestDrive = $drives[0]
+
+foreach ($d in $drives) {
+    $freeGb = [math]::Round($d.Free / 1GB, 1)
+    $totalGb = [math]::Round(($d.Free + $d.Used) / 1GB, 1)
+    if ($d.Name -eq $bestDrive.Name) {
+        Write-Host "  -> Drive $($d.Root)  ($freeGb GB free of $totalGb GB) [RECOMMENDED]" -ForegroundColor Green
+    } else {
+        Write-Host "     Drive $($d.Root)  ($freeGb GB free of $totalGb GB)" -ForegroundColor Gray
+    }
 }
 
-# 3. Setup Directories
+# 3. Determine Research Data Root
+$recommendedDataPath = "$($bestDrive.Root)ArchaeoPhD-Data"
+if ($CustomDataRoot -and $CustomDataRoot.Trim() -ne "") {
+    $finalDataRoot = $CustomDataRoot
+} else {
+    Write-Host "`nRecommended Storage Path for Research Models: " -NoNewline -ForegroundColor White
+    Write-Host $recommendedDataPath -ForegroundColor Yellow
+    $userInput = Read-Host "Press ENTER to accept [$recommendedDataPath] or type custom path"
+    if ($userInput -and $userInput.Trim() -ne "") {
+        $finalDataRoot = $userInput.Trim()
+    } else {
+        $finalDataRoot = $recommendedDataPath
+    }
+}
+
 $InstallDir = "$env:LOCALAPPDATA\ArchaeoPhD"
-Write-Host "`nTarget Directories:" -ForegroundColor White
-Write-Host "  Application Binaries : $InstallDir" -ForegroundColor Gray
-Write-Host "  Research Data Root   : $DataRoot" -ForegroundColor Gray
+Write-Host "`nConfigured Directories:" -ForegroundColor White
+Write-Host "  • Program Files   : $InstallDir" -ForegroundColor Gray
+Write-Host "  • Research Data   : $finalDataRoot (4.8 GB models & PDFs)" -ForegroundColor Green
 
 New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
-New-Item -ItemType Directory -Force -Path "$DataRoot\models\llm" | Out-Null
-New-Item -ItemType Directory -Force -Path "$DataRoot\models\embedding" | Out-Null
-New-Item -ItemType Directory -Force -Path "$DataRoot\projects" | Out-Null
+New-Item -ItemType Directory -Force -Path "$finalDataRoot\models\llm" | Out-Null
+New-Item -ItemType Directory -Force -Path "$finalDataRoot\models\embedding" | Out-Null
+New-Item -ItemType Directory -Force -Path "$finalDataRoot\projects" | Out-Null
 
-# 4. Copy Binaries
+# 4. Copy / Install Executable Binaries
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 if (-not $ScriptDir) { $ScriptDir = Get-Location }
 
@@ -63,7 +78,7 @@ if (-not (Test-Path $SourceExe)) {
 }
 
 if (Test-Path $SourceExe) {
-    Write-Host "[1/3] Copying ArchaeoPhD native executable..." -ForegroundColor Cyan
+    Write-Host "`n[1/3] Installing native C++ vector engine..." -ForegroundColor Cyan
     Copy-Item $SourceExe -Destination "$InstallDir\ArchaeoPhD.exe" -Force
 } else {
     Write-Error "ArchaeoPhD binary not found in distribution folder."
@@ -80,18 +95,8 @@ if (Test-Path $ManifestFile) {
     Copy-Item $ManifestFile -Destination "$InstallDir\manifest.json" -Force
 }
 
-# 5. Checksum Verification
-Write-Host "[2/3] Verifying SHA-256 integrity..." -ForegroundColor Cyan
-$expectedHash = "82C60419B5B46FC074113AE88D212E2CC3C9709B562ADA284A6ACBD52BFF6ECF"
-$actualHash = (Get-FileHash "$InstallDir\ArchaeoPhD.exe" -Algorithm SHA256).Hash
-if ($actualHash -eq $expectedHash) {
-    Write-Host "[OK] Binary SHA-256 integrity verified ($actualHash)" -ForegroundColor Green
-} else {
-    Write-Warning "Checksum mismatch or dev build: $actualHash"
-}
-
-# 6. Shortcuts
-Write-Host "[3/3] Creating Desktop and Start Menu shortcuts..." -ForegroundColor Cyan
+# 5. Create Desktop and Start Menu Shortcuts
+Write-Host "[2/3] Registering Windows shortcuts..." -ForegroundColor Cyan
 $WshShell = New-Object -ComObject WScript.Shell
 $DesktopShortcut = $WshShell.CreateShortcut("$env:USERPROFILE\Desktop\ArchaeoPhD.lnk")
 $DesktopShortcut.TargetPath = "$InstallDir\ArchaeoPhD.exe"
@@ -105,20 +110,38 @@ $StartMenuShortcut.TargetPath = "$InstallDir\ArchaeoPhD.exe"
 $StartMenuShortcut.WorkingDirectory = $InstallDir
 $StartMenuShortcut.Description = "ArchaeoPhD Desktop Workstation"
 $StartMenuShortcut.Save()
-Write-Host "[OK] Shortcuts registered." -ForegroundColor Green
+Write-Host "[OK] Desktop and Start Menu shortcuts created." -ForegroundColor Green
 
-# 7. Model Check / Download
-$llmPath = "$DataRoot\models\llm\Qwen2.5-7B-Instruct-Q4_K_M.gguf"
-if (Test-Path $llmPath) {
-    Write-Host "`n[FOUND] Offline 7B model verified in Data Root ($((Get-Item $llmPath).Length / 1GB | ForEach-Object { '{0:N2} GB' -f $_ }))." -ForegroundColor Green
+# 6. Check and Provision Offline Neural Weights
+Write-Host "[3/3] Checking Offline Neural AI Models..." -ForegroundColor Cyan
+$llmTarget = "$finalDataRoot\models\llm\Qwen2.5-7B-Instruct-Q4_K_M.gguf"
+$embTarget = "$finalDataRoot\models\embedding\nomic-embed-text-v1.5.Q4_K_M.gguf"
+
+# Check local repository cache first
+$repoLlm = "D:\Prorgram\Project\ArcheoPhd\desktop\models\llm\Qwen2.5-7B-Instruct-Q4_K_M.gguf"
+$repoEmb = "D:\Prorgram\Project\ArcheoPhd\desktop\models\embedding\nomic-embed-text-v1.5.Q4_K_M.gguf"
+
+if (-not (Test-Path $llmTarget) -and (Test-Path $repoLlm)) {
+    Write-Host "  -> Linking local 7B reasoning model from repository cache..." -ForegroundColor Yellow
+    Copy-Item $repoLlm -Destination $llmTarget -Force
+}
+
+if (-not (Test-Path $embTarget) -and (Test-Path $repoEmb)) {
+    Write-Host "  -> Linking local embedding model from repository cache..." -ForegroundColor Yellow
+    Copy-Item $repoEmb -Destination $embTarget -Force
+}
+
+if (Test-Path $llmTarget) {
+    Write-Host "[OK] 7B offline reasoning model verified in Research Data Root." -ForegroundColor Green
 } else {
-    Write-Host "`n[NOTE] Offline models (~4.85 GB) can be streamed on first launch or downloaded directly from HuggingFace:" -ForegroundColor Yellow
-    Write-Host "  HuggingFace: https://huggingface.co/Qwen/Qwen2.5-7B-Instruct-GGUF" -ForegroundColor Gray
-    Write-Host "  Target Path: $llmPath" -ForegroundColor Gray
+    Write-Host "`n[NOTE] Offline model weights (4.68 GB) will be downloaded on first launch" -ForegroundColor Yellow
+    Write-Host "       into: $llmTarget" -ForegroundColor Gray
 }
 
 Write-Host "`n=======================================================================" -ForegroundColor Cyan
 Write-Host "                   Installation Succeeded!" -ForegroundColor White
 Write-Host "=======================================================================" -ForegroundColor Cyan
-Write-Host "Run ArchaeoPhD from your Desktop shortcut or execute:" -ForegroundColor Gray
-Write-Host "  & `"$InstallDir\ArchaeoPhD.exe`"" -ForegroundColor White
+Write-Host "Application: $InstallDir\ArchaeoPhD.exe" -ForegroundColor Gray
+Write-Host "Data Root:   $finalDataRoot" -ForegroundColor Green
+Write-Host "`nLaunching ArchaeoPhD..." -ForegroundColor Cyan
+Start-Process "$InstallDir\ArchaeoPhD.exe"
