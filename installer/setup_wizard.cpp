@@ -263,6 +263,20 @@ void RunInstallationThread() {
             cfgFile.close();
         }
 
+        // Ensure settings.json is configured
+        std::wstring settingsPath = installDir + L"\\settings.json";
+        std::wofstream setFile(settingsPath.c_str());
+        if (setFile.is_open()) {
+            setFile << L"{\n";
+            setFile << L"  \"data_root\": \"" << escapeJsonPath(projectsDir) << L"\"\n";
+            setFile << L"}\n";
+            setFile.close();
+        }
+
+        // Remove stale build signature so fresh dist payload extracts on first run
+        std::error_code ecSig;
+        fs::remove(installDir + L"\\app\\build_signature.txt", ecSig);
+
         // Link existing repo models if present on this workstation
         std::wstring repoLlm = L"D:\\Prorgram\\Project\\ArcheoPhd\\desktop\\models\\llm\\Qwen2.5-7B-Instruct-Q4_K_M.gguf";
         std::wstring repoEmb = L"D:\\Prorgram\\Project\\ArcheoPhd\\desktop\\models\\embedding\\nomic-embed-text-v1.5.Q4_K_M.gguf";
