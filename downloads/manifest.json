@@ -10,9 +10,9 @@
   "binaries": {
     "installer": {
       "filename": "ArchaeoPhD-Setup.exe",
-      "size_bytes": 10803112,
-      "size_human": "10.3 MB",
-      "sha256": "03c8a74207637d108b5586916ba01465660cc8ab323b5b0a062256f8148bfbde",
+      "size_bytes": 10267136,
+      "size_human": "9.79 MB",
+      "sha256": "07dfc8cebcfd79be41462c3eec0e19598ad83c184db0eab824891c40894bb6d4",
       "entry_point": "ArchaeoPhD.exe",
       "architecture": "x86_64",
       "subsystem": "windows_gui"
