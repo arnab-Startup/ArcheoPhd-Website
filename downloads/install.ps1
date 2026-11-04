@@ -72,9 +72,9 @@ New-Item -ItemType Directory -Force -Path "$finalDataRoot\projects" | Out-Null
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 if (-not $ScriptDir) { $ScriptDir = Get-Location }
 
-$SourceExe = Join-Path $ScriptDir "ArchaeoPhD-Setup.exe"
+$SourceExe = Join-Path $ScriptDir "ArchaeoPhD.exe"
 if (-not (Test-Path $SourceExe)) {
-    $SourceExe = Join-Path $ScriptDir "ArchaeoPhD.exe"
+    $SourceExe = Join-Path $ScriptDir "ArchaeoPhD-Setup.exe"
 }
 
 if (Test-Path $SourceExe) {

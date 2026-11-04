@@ -7,6 +7,8 @@
 #include <shlobj.h>
 #include <shlwapi.h>
 #include <shellapi.h>
+#include <tlhelp32.h>
+#include <shobjidl.h>
 #include <string>
 #include <vector>
 #include <filesystem>
@@ -146,23 +148,48 @@ bool CreateShortcut(const std::wstring& targetPath, const std::wstring& shortcut
     return SUCCEEDED(hr);
 }
 
-// Folder Browser Dialog
+// Modern Windows 10/11 Folder Browser Dialog
 std::wstring BrowseForFolder(HWND hWnd, const std::wstring& title) {
+    HRESULT hrInit = OleInitialize(NULL);
+    IFileOpenDialog* pfd = nullptr;
+    HRESULT hr = CoCreateInstance(CLSID_FileOpenDialog, NULL, CLSCTX_INPROC_SERVER, IID_PPV_ARGS(&pfd));
+    if (SUCCEEDED(hr) && pfd) {
+        DWORD dwOptions = 0;
+        if (SUCCEEDED(pfd->GetOptions(&dwOptions))) {
+            pfd->SetOptions(dwOptions | FOS_PICKFOLDERS | FOS_FORCEFILESYSTEM | FOS_PATHMUSTEXIST);
+        }
+        pfd->SetTitle(title.c_str());
+        if (SUCCEEDED(pfd->Show(hWnd))) {
+            IShellItem* psiResult = nullptr;
+            if (SUCCEEDED(pfd->GetResult(&psiResult)) && psiResult) {
+                PWSTR pszPath = nullptr;
+                if (SUCCEEDED(psiResult->GetDisplayName(SIGDN_FILESYSPATH, &pszPath)) && pszPath) {
+                    std::wstring res(pszPath);
+                    CoTaskMemFree(pszPath);
+                    psiResult->Release();
+                    pfd->Release();
+                    if (SUCCEEDED(hrInit)) OleUninitialize();
+                    return res;
+                }
+                psiResult->Release();
+            }
+        }
+        pfd->Release();
+    }
+
     wchar_t path[MAX_PATH] = { 0 };
     BROWSEINFOW bi = { 0 };
     bi.hwndOwner = hWnd;
     bi.lpszTitle = title.c_str();
-    bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE;
+    bi.ulFlags = BIF_RETURNONLYFSDIRS | BIF_NEWDIALOGSTYLE | BIF_USENEWUI;
     LPITEMIDLIST pidl = SHBrowseForFolderW(&bi);
     if (pidl != 0) {
         SHGetPathFromIDListW(pidl, path);
-        IMalloc* imalloc = 0;
-        if (SUCCEEDED(SHGetMalloc(&imalloc))) {
-            imalloc->Free(pidl);
-            imalloc->Release();
-        }
+        CoTaskMemFree(pidl);
+        if (SUCCEEDED(hrInit)) OleUninitialize();
         return std::wstring(path);
     }
+    if (SUCCEEDED(hrInit)) OleUninitialize();
     return L"";
 }
 
@@ -189,6 +216,27 @@ void RunInstallationThread() {
     };
 
     try {
+        // Close any running instance of ArchaeoPhD before extraction to release file locks
+        HANDLE hSnap = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+        if (hSnap != INVALID_HANDLE_VALUE) {
+            PROCESSENTRY32W pe;
+            pe.dwSize = sizeof(pe);
+            if (Process32FirstW(hSnap, &pe)) {
+                do {
+                    if (_wcsicmp(pe.szExeFile, L"ArchaeoPhD.exe") == 0) {
+                        HANDLE hProc = OpenProcess(PROCESS_TERMINATE, FALSE, pe.th32ProcessID);
+                        if (hProc) {
+                            TerminateProcess(hProc, 0);
+                            WaitForSingleObject(hProc, 2000);
+                            CloseHandle(hProc);
+                        }
+                    }
+                } while (Process32NextW(hSnap, &pe));
+            }
+            CloseHandle(hSnap);
+        }
+        Sleep(200);
+
         setStatus(L"Step 1/5: Creating target directories...", 15);
         fs::create_directories(installDir);
         fs::create_directories(modelsDir + L"\\llm");
@@ -294,10 +342,21 @@ void RunInstallationThread() {
 
         setStatus(L"Step 5/5: Creating Windows application shortcuts...", 95);
         if (createDesktop) {
-            wchar_t desktopPath[MAX_PATH] = { 0 };
-            if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_DESKTOPDIRECTORY, NULL, 0, desktopPath))) {
-                std::wstring link = std::wstring(desktopPath) + L"\\ArchaeoPhD.lnk";
-                CreateShortcut(exeDst, link, L"ArchaeoPhD - AI Research Workspace for Archaeology", installDir);
+            std::vector<std::wstring> desktopDirs;
+            PWSTR pKnownDesktop = nullptr;
+            if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Desktop, 0, NULL, &pKnownDesktop)) && pKnownDesktop) {
+                desktopDirs.push_back(pKnownDesktop);
+                CoTaskMemFree(pKnownDesktop);
+            }
+            wchar_t csidlDesktop[MAX_PATH] = { 0 };
+            if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_DESKTOPDIRECTORY, NULL, 0, csidlDesktop)) && csidlDesktop[0]) {
+                desktopDirs.push_back(csidlDesktop);
+            }
+            for (const auto& dDir : desktopDirs) {
+                if (fs::exists(dDir)) {
+                    std::wstring link = dDir + L"\\ArchaeoPhD.lnk";
+                    CreateShortcut(exeDst, link, L"ArchaeoPhD - AI Research Workspace for Archaeology", installDir);
+                }
             }
         }
 
@@ -514,7 +573,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                 EnableWindow(g_hStartMenuChk, FALSE);
                 EnableWindow(g_hInstallBtn, FALSE);
                 EnableWindow(g_hCancelBtn, FALSE);
-                std::thread(RunInstallationThread).detach();
+                CreateThread(NULL, 0, (LPTHREAD_START_ROUTINE)RunInstallationThread, NULL, 0, NULL);
             }
         }
         else if (id == IDC_CANCEL_BTN) {
