@@ -1,3 +1,6 @@
+// Application Setup Wizard Icon
+1 ICON "app.ico"
+
 #define IDR_ARCHAEOPHD_EXE 101
 #define IDR_WEBVIEW2_DLL   102
 
