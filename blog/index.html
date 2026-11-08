@@ -6,8 +6,8 @@
   <title>ArchaeoPhD Research Blog — Methods, AI & Evidence Workflows</title>
   <meta name="description" content="Guides on AI for archaeological research, evidence-based workflows, citation management, excavation data, and knowledge graphs — for archaeology PhDs and supervisors." />
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3.2 L18.8 20.6 H5.2 Z' fill='%2394462A'/%3E%3Cpath d='M12 8.4 L14.5 14.2 H9.5 Z' fill='%23F5F0E6'/%3E%3Crect x='7' y='16.4' width='10' height='1.1' fill='%23F5F0E6'/%3E%3Crect x='6.2' y='18.4' width='11.6' height='0.9' fill='%23F5F0E6' opacity='0.7'/%3E%3Ccircle cx='12' cy='3.2' r='1.9' fill='%23C89B3C'/%3E%3C/svg%3E" />
-  <link rel="stylesheet" href="../styles.css" />
-  <script src="blog-data.js"></script>
+  <link rel="stylesheet" href="/styles.css" />
+  <script src="/blog/blog-data.js"></script>
   <style>
     .blog-hero {
       padding-top: 7rem;
@@ -196,7 +196,7 @@
   <!-- Sticky Navbar -->
   <header class="navbar" id="main-navbar">
     <div class="navbar-container">
-      <a href="../" class="nav-brand">
+      <a href="/" class="nav-brand">
         <span class="nav-brand-icon">
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
             <path d="M12 3.2 L18.8 20.6 H5.2 Z" fill="#94462A" />
@@ -211,18 +211,18 @@
 
       <nav>
         <ul class="nav-links">
-          <li><a href="../#problem" class="nav-link">The Problem</a></li>
-          <li><a href="../#how" class="nav-link">How it Works</a></li>
-          <li><a href="../#graph" class="nav-link">Evidence Graph</a></li>
-          <li><a href="./" class="nav-link active">Blog</a></li>
-          <li><a href="../#pricing" class="nav-link">Pricing</a></li>
-          <li><a href="../#faq" class="nav-link">FAQ</a></li>
+          <li><a href="/problem" class="nav-link">Problem</a></li>
+          <li><a href="/how" class="nav-link">How it Works</a></li>
+          <li><a href="/graph" class="nav-link">Evidence Graph</a></li>
+          <li><a href="/blog" class="nav-link active">Blog</a></li>
+          <li><a href="/pricing" class="nav-link">Pricing</a></li>
+          <li><a href="/faq" class="nav-link">FAQ</a></li>
         </ul>
       </nav>
 
       <div class="nav-actions">
-        <a href="../#interactive-lab" class="btn btn-secondary btn-sm">Explore Demo</a>
-        <a href="../downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" class="btn btn-primary btn-sm">
+        <a href="/interactive-lab" class="btn btn-secondary btn-sm">Explore Demo</a>
+        <a href="/downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" class="btn btn-primary btn-sm">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
           Download for Windows
         </a>
@@ -299,10 +299,10 @@
         <h2 style="font-family: var(--font-display); font-size: 1.75rem; margin-bottom: 0.75rem;">Put these methods to work</h2>
         <p style="color: var(--muted-foreground); margin-bottom: 1.5rem;">Start your research project and connect your evidence with the native offline desktop workstation.</p>
         <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
-          <a href="../downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" class="btn btn-primary btn-md">
+          <a href="/downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" class="btn btn-primary btn-md">
             Download for Windows
           </a>
-          <a href="../#interactive-lab" class="btn btn-secondary btn-md">
+          <a href="/interactive-lab" class="btn btn-secondary btn-md">
             Explore Demo
           </a>
         </div>
@@ -430,11 +430,16 @@
         }).join('');
       }
 
-      window.openArticle = function (slug) {
+      window.openArticle = function (slug, push) {
         var post = posts.find(function (p) { return p.slug === slug; });
         if (!post) return;
 
-        window.location.hash = slug;
+        if (push !== false) {
+          try {
+            history.pushState({ slug: slug }, '', '/blog/' + slug);
+          } catch (e) {}
+        }
+        document.title = post.title + ' — ArchaeoPhD Research';
 
         document.getElementById('article-title').innerText = post.title;
         document.getElementById('article-date').innerText = post.date;
@@ -463,7 +468,10 @@
       };
 
       backBtn.onclick = function () {
-        window.location.hash = '';
+        try {
+          history.pushState({}, '', '/blog');
+        } catch (e) {}
+        document.title = 'ArchaeoPhD Research Blog — Methods, AI & Evidence Workflows';
         readerView.style.display = 'none';
         hubView.style.display = 'block';
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -476,23 +484,43 @@
         };
       }
 
-      // Handle direct hash navigation
-      function checkHash() {
-        var hash = window.location.hash.replace('#', '').trim();
+      // Handle clean URL routing & immediately clean up any legacy hashes
+      function handleRoute() {
+        var pathname = window.location.pathname;
+        var hash = (window.location.hash || '').replace(/^#\/?/, '').trim();
+        var slug = '';
+
+        // If user came via an old hash link (e.g. /blog/#some-slug), immediately convert to clean /blog/some-slug
         if (hash) {
-          openArticle(hash);
+          slug = hash;
+          try {
+            history.replaceState({ slug: slug }, '', '/blog/' + slug);
+          } catch (e) {}
         } else {
+          // Parse slug from clean pathname: /blog/slug or /blog/slug/
+          var match = pathname.match(/^\/blog\/([^\/]+)/);
+          if (match && match[1] && match[1] !== 'index.html') {
+            slug = match[1];
+          }
+        }
+
+        if (slug) {
+          openArticle(slug, false);
+        } else {
+          document.title = 'ArchaeoPhD Research Blog — Methods, AI & Evidence Workflows';
           readerView.style.display = 'none';
           hubView.style.display = 'block';
         }
       }
 
-      window.addEventListener('hashchange', checkHash);
+      window.addEventListener('popstate', handleRoute);
+      window.addEventListener('hashchange', handleRoute);
 
       renderTags();
       renderPosts();
-      checkHash();
+      handleRoute();
     })();
   </script>
 </body>
 </html>
+

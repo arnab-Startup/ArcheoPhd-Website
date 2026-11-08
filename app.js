@@ -22,6 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initModalHandlers();
   initCopyButtons();
   initStickyCta();
+  initCleanNavigation();
 });
 
 // --------------------------------------------------------------------------
@@ -399,6 +400,75 @@ function initStickyCta() {
   stickyClose.addEventListener('click', () => {
     stickyDismissed = true;
     stickyCta.style.display = 'none';
+  });
+}
+
+// --------------------------------------------------------------------------
+// 11. Clean Route Navigation (Zero '#' in URLs)
+// --------------------------------------------------------------------------
+function initCleanNavigation() {
+  // If user entered with a hash like #ai or #problem, convert to clean path immediately
+  if (window.location.hash) {
+    const rawHash = window.location.hash.replace(/^#\/?/, '').trim();
+    if (rawHash) {
+      try {
+        history.replaceState(null, '', '/' + rawHash);
+      } catch (e) {}
+      const target = document.getElementById(rawHash);
+      if (target) {
+        setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 50);
+      }
+    }
+  } else {
+    // If user loaded a clean route directly like /ai, /sites, /thesis
+    const path = window.location.pathname.replace(/^\//, '').split('/')[0];
+    if (path && path !== 'index.html') {
+      const target = document.getElementById(path);
+      if (target) {
+        setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 50);
+      }
+    }
+  }
+
+  // Intercept section links to prevent '#' from appearing in the address bar
+  document.querySelectorAll('a[href^="/"], a[href^="#"]').forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('/blog') || href.startsWith('/downloads') || href.includes('.')) return;
+
+    link.addEventListener('click', (e) => {
+      let targetId = '';
+      if (href.startsWith('#')) {
+        targetId = href.substring(1);
+      } else if (href.startsWith('/')) {
+        targetId = href.substring(1);
+      }
+
+      if (!targetId || targetId === 'hero') {
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        try { history.pushState(null, '', '/'); } catch (err) {}
+        return;
+      }
+
+      const targetEl = document.getElementById(targetId);
+      if (targetEl) {
+        e.preventDefault();
+        targetEl.scrollIntoView({ behavior: 'smooth' });
+        try { history.pushState(null, '', '/' + targetId); } catch (err) {}
+      }
+    });
+  });
+
+  window.addEventListener('popstate', () => {
+    const path = window.location.pathname.replace(/^\//, '').split('/')[0];
+    if (path) {
+      const target = document.getElementById(path);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   });
 }
 

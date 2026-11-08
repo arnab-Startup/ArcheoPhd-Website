@@ -20,9 +20,16 @@ const MIME = {
   '.gguf': 'application/octet-stream'
 };
 
+const CLEAN_SECTION_ROUTES = new Set([
+  '/problem', '/how', '/graph', '/interactive-lab', '/ai', '/sites',
+  '/chronology', '/thesis', '/voice', '/collaboration', '/pricing',
+  '/faq', '/downloads', '/security', '/about'
+]);
+
 const server = http.createServer((req, res) => {
   let reqPath = decodeURI(req.url.split('?')[0]);
-  if (reqPath === '/') reqPath = '/index.html';
+  if (reqPath === '' || reqPath === '/') reqPath = '/index.html';
+  if (CLEAN_SECTION_ROUTES.has(reqPath)) reqPath = '/index.html';
   if (reqPath === '/blog' || reqPath === '/blog/') reqPath = '/blog/index.html';
   if (reqPath.startsWith('/blog/') && !path.extname(reqPath)) reqPath = '/blog/index.html';
   
