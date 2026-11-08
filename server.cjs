@@ -23,6 +23,8 @@ const MIME = {
 const server = http.createServer((req, res) => {
   let reqPath = decodeURI(req.url.split('?')[0]);
   if (reqPath === '/') reqPath = '/index.html';
+  if (reqPath === '/blog' || reqPath === '/blog/') reqPath = '/blog/index.html';
+  if (reqPath.startsWith('/blog/') && !path.extname(reqPath)) reqPath = '/blog/index.html';
   
   let filePath;
   if (reqPath.startsWith('/models/')) {

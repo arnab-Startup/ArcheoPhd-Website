@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ArchaeoPhD Research Blog — Methods, AI & Evidence Workflows</title>
+  <meta name="description" content="Guides on AI for archaeological research, evidence-based workflows, citation management, excavation data, and knowledge graphs — for archaeology PhDs and supervisors." />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 3.2 L18.8 20.6 H5.2 Z' fill='%2394462A'/%3E%3Cpath d='M12 8.4 L14.5 14.2 H9.5 Z' fill='%23F5F0E6'/%3E%3Crect x='7' y='16.4' width='10' height='1.1' fill='%23F5F0E6'/%3E%3Crect x='6.2' y='18.4' width='11.6' height='0.9' fill='%23F5F0E6' opacity='0.7'/%3E%3Ccircle cx='12' cy='3.2' r='1.9' fill='%23C89B3C'/%3E%3C/svg%3E" />
+  <link rel="stylesheet" href="../styles.css" />
+  <script src="blog-data.js"></script>
+  <style>
+    .blog-hero {
+      padding-top: 7rem;
+      padding-bottom: 3.5rem;
+      border-bottom: 1px solid var(--border);
+      background: radial-gradient(circle at 1px 1px, rgba(35, 31, 28, 0.035) 1px, transparent 0);
+      background-size: 22px 22px;
+    }
+    .blog-filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin: 2.5rem 0 2rem;
+    }
+    .blog-search-box {
+      position: relative;
+      width: 100%;
+      max-width: 320px;
+    }
+    .blog-search-box input {
+      width: 100%;
+      height: 2.5rem;
+      padding: 0 1rem 0 2.5rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--foreground);
+      font-size: 0.875rem;
+      outline: none;
+      transition: border-color 0.15s ease;
+    }
+    .blog-search-box input:focus {
+      border-color: var(--primary);
+    }
+    .blog-search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted-foreground);
+    }
+    .blog-tag-pill {
+      font-size: 0.75rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted-foreground);
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .blog-tag-pill:hover, .blog-tag-pill.active {
+      background: var(--primary);
+      color: var(--primary-foreground);
+      border-color: var(--primary);
+    }
+    .blog-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 5rem;
+    }
+    .blog-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 1.75rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      cursor: pointer;
+      text-decoration: none;
+      color: inherit;
+    }
+    .blog-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px -4px rgba(35, 31, 28, 0.08);
+      border-color: var(--primary);
+    }
+    .blog-card-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      font-size: 0.75rem;
+      color: var(--muted-foreground);
+      margin-bottom: 0.75rem;
+    }
+    .blog-card-title {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      font-weight: 600;
+      line-height: 1.35;
+      margin-bottom: 0.75rem;
+      color: var(--foreground);
+    }
+    .blog-card-desc {
+      font-size: 0.875rem;
+      color: var(--muted-foreground);
+      line-height: 1.55;
+      margin-bottom: 1.25rem;
+      flex-grow: 1;
+    }
+    .blog-card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border);
+      padding-top: 1rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    /* Article Reader Mode */
+    #article-reader {
+      display: none;
+      padding-top: 7rem;
+      padding-bottom: 6rem;
+    }
+    .article-container {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+    .article-header {
+      margin-bottom: 2.5rem;
+    }
+    .article-title {
+      font-family: var(--font-display);
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+      margin: 1rem 0;
+      color: var(--foreground);
+    }
+    .article-body {
+      font-family: "Garamond", "Georgia", serif;
+      font-size: 1.125rem;
+      line-height: 1.8;
+      color: var(--foreground);
+    }
+    .article-body h2 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 2.5rem 0 1rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.5rem;
+      line-height: 1.3;
+    }
+    .article-body h3 {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin: 2rem 0 0.75rem;
+    }
+    .article-body p {
+      margin-bottom: 1.5rem;
+      text-align: justify;
+    }
+    .article-body blockquote {
+      margin: 1.75rem 0;
+      padding: 0.75rem 1.5rem;
+      border-left: 3px solid var(--primary);
+      background: rgba(113, 50, 29, 0.04);
+      font-style: italic;
+    }
+    .article-body ul, .article-body ol {
+      margin: 1rem 0 1.5rem 2rem;
+    }
+    .article-body li {
+      margin-bottom: 0.5rem;
+    }
+    .article-body strong {
+      font-weight: 700;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Sticky Navbar -->
+  <header class="navbar" id="main-navbar">
+    <div class="navbar-container">
+      <a href="../" class="nav-brand">
+        <span class="nav-brand-icon">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <path d="M12 3.2 L18.8 20.6 H5.2 Z" fill="#94462A" />
+            <path d="M12 8.4 L14.5 14.2 H9.5 Z" fill="#F5F0E6" />
+            <rect x="7" y="16.4" width="10" height="1.1" fill="#F5F0E6" />
+            <rect x="6.2" y="18.4" width="11.6" height="0.9" fill="#F5F0E6" opacity="0.7" />
+            <circle cx="12" cy="3.2" r="1.9" fill="#C89B3C" />
+          </svg>
+        </span>
+        <span class="nav-brand-text">ArchaeoPhD</span>
+      </a>
+
+      <nav>
+        <ul class="nav-links">
+          <li><a href="../#problem" class="nav-link">The Problem</a></li>
+          <li><a href="../#how" class="nav-link">How it Works</a></li>
+          <li><a href="../#graph" class="nav-link">Evidence Graph</a></li>
+          <li><a href="./" class="nav-link active">Blog</a></li>
+          <li><a href="../#pricing" class="nav-link">Pricing</a></li>
+          <li><a href="../#faq" class="nav-link">FAQ</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="../#interactive-lab" class="btn btn-secondary btn-sm">Explore Demo</a>
+        <a href="../downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" class="btn btn-primary btn-sm">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+          Download for Windows
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- VIEW 1: Blog Hub List -->
+  <main id="blog-hub-view">
+    <section class="blog-hero">
+      <div class="container">
+        <div class="pill-badge" style="margin-bottom: 1rem;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"/><path d="M6 2v20"/></svg>
+          <span>RESEARCH EDITORIAL & GUIDES</span>
+        </div>
+        <h1 class="hero-title" style="max-width: 800px; font-size: 3rem; margin-bottom: 1rem;">
+          Methods, tools, and rigor for archaeology research
+        </h1>
+        <p class="hero-desc" style="max-width: 720px; font-size: 1.125rem;">
+          Practical, field-tested guides on AI, evidence-based workflows, citation management, and knowledge graphs — written for archaeology PhDs, postdoctoral researchers, and supervisors.
+        </p>
+
+        <!-- Search & Filter Bar -->
+        <div class="blog-filter-bar">
+          <div class="blog-search-box">
+            <svg class="blog-search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+            <input type="text" id="blog-search-input" placeholder="Search guides, methods, tools…" />
+          </div>
+
+          <div id="blog-tags-container" style="display: flex; flex-wrap: wrap; gap: 0.5rem;">
+            <!-- Dynamically populated tags -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="container" style="margin-top: 2.5rem;">
+      <div id="blog-posts-grid" class="blog-grid">
+        <!-- Dynamically rendered blog cards -->
+      </div>
+    </div>
+  </main>
+
+  <!-- VIEW 2: Full Article Reader -->
+  <article id="article-reader">
+    <div class="article-container">
+      <button id="btn-back-to-blog" class="btn btn-secondary btn-sm" style="margin-bottom: 2rem; display: inline-flex; align-items: center; gap: 0.5rem;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m15 18-6-6 6-6"/></svg>
+        All Articles
+      </button>
+
+      <div class="article-header">
+        <div id="article-tags" style="display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap;"></div>
+        <h1 id="article-title" class="article-title"></h1>
+        <div style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.875rem; color: var(--muted-foreground);">
+          <span>ArchaeoPhD Editorial</span>
+          <span>•</span>
+          <span id="article-date"></span>
+          <span>•</span>
+          <span id="article-rt"></span>
+        </div>
+      </div>
+
+      <div id="article-content" class="article-body"></div>
+
+      <!-- Continue Reading Related Guides -->
+      <section style="margin-top: 4rem; padding-top: 2.5rem; border-top: 1px solid var(--border);">
+        <h2 style="font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 1.5rem;">Continue Reading</h2>
+        <div id="article-related-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1rem;"></div>
+      </section>
+
+      <!-- CTA Band -->
+      <div class="card" style="margin-top: 3.5rem; padding: 2.5rem; text-align: center; background: var(--secondary);">
+        <h2 style="font-family: var(--font-display); font-size: 1.75rem; margin-bottom: 0.75rem;">Put these methods to work</h2>
+        <p style="color: var(--muted-foreground); margin-bottom: 1.5rem;">Start your research project and connect your evidence with the native offline desktop workstation.</p>
+        <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+          <a href="../downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" class="btn btn-primary btn-md">
+            Download for Windows
+          </a>
+          <a href="../#interactive-lab" class="btn btn-secondary btn-md">
+            Explore Demo
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-container">
+      <div class="footer-brand">
+        <div class="nav-brand">
+          <span class="nav-brand-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <path d="M12 3.2 L18.8 20.6 H5.2 Z" fill="#94462A" />
+              <path d="M12 8.4 L14.5 14.2 H9.5 Z" fill="#F5F0E6" />
+              <rect x="7" y="16.4" width="10" height="1.1" fill="#F5F0E6" />
+              <circle cx="12" cy="3.2" r="1.9" fill="#C89B3C" />
+            </svg>
+          </span>
+          <span class="nav-brand-text">ArchaeoPhD</span>
+        </div>
+        <p class="footer-tagline">
+          Evidence-traceable research AI workstation for archaeology Master's & PhD researchers.
+        </p>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">
+          &copy; 2026 ArchaeoPhD. Demonstration data is fictional. Offline & on-device by design.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var posts = window.archaeoBlogPosts || [];
+      var activeTag = 'All';
+      var searchQuery = '';
+
+      var hubView = document.getElementById('blog-hub-view');
+      var readerView = document.getElementById('article-reader');
+      var gridEl = document.getElementById('blog-posts-grid');
+      var tagsEl = document.getElementById('blog-tags-container');
+      var searchInput = document.getElementById('blog-search-input');
+      var backBtn = document.getElementById('btn-back-to-blog');
+
+      // 1. Extract Unique Tags
+      var allTags = new Set();
+      posts.forEach(function (p) {
+        (p.tags || []).forEach(function (t) { allTags.add(t); });
+      });
+      var tagsList = ['All'].concat(Array.from(allTags));
+
+      function renderTags() {
+        tagsEl.innerHTML = tagsList.map(function (t) {
+          return '<button class="blog-tag-pill ' + (t === activeTag ? 'active' : '') + '" data-tag="' + t + '">' + t + '</button>';
+        }).join('');
+
+        tagsEl.querySelectorAll('[data-tag]').forEach(function (btn) {
+          btn.onclick = function () {
+            activeTag = btn.getAttribute('data-tag');
+            renderTags();
+            renderPosts();
+          };
+        });
+      }
+
+      // 2. Render Blog Cards
+      function renderPosts() {
+        var q = searchQuery.toLowerCase().trim();
+        var filtered = posts.filter(function (p) {
+          var matchTag = activeTag === 'All' || (p.tags || []).indexOf(activeTag) !== -1;
+          var matchQuery = !q || p.title.toLowerCase().indexOf(q) !== -1 || p.description.toLowerCase().indexOf(q) !== -1 || (p.keywords || []).some(function(k){ return k.toLowerCase().indexOf(q) !== -1; });
+          return matchTag && matchQuery;
+        });
+
+        if (filtered.length === 0) {
+          gridEl.innerHTML = '<div style="grid-column: 1/-1; padding: 3rem; text-align: center; color: var(--muted-foreground);">No articles found matching your search. Try another keyword.</div>';
+          return;
+        }
+
+        gridEl.innerHTML = filtered.map(function (p) {
+          return `
+            <div class="blog-card" onclick="openArticle('${p.slug}')">
+              <div>
+                <div class="blog-card-meta">
+                  <span>${p.date}</span>
+                  <span>•</span>
+                  <span>${p.readingTime}</span>
+                </div>
+                <div style="display: flex; gap: 0.35rem; margin-bottom: 0.75rem; flex-wrap: wrap;">
+                  ${(p.tags || []).slice(0, 2).map(function(t){ return '<span style="font-size: 0.6875rem; padding: 0.15rem 0.5rem; border-radius: 9999px; background: var(--secondary); color: var(--foreground);">' + t + '</span>'; }).join('')}
+                </div>
+                <h3 class="blog-card-title">${p.title}</h3>
+                <p class="blog-card-desc">${p.description}</p>
+              </div>
+              <div class="blog-card-footer">
+                <span>Read Full Guide</span>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      // Simple Markdown Parser for Article Content
+      function parseMarkdown(md) {
+        if (!md) return '';
+        var html = md
+          .replace(/^### (.*$)/gim, '<h3>$1</h3>')
+          .replace(/^## (.*$)/gim, '<h2>$1</h2>')
+          .replace(/^# (.*$)/gim, '<h1>$1</h1>')
+          .replace(/^\> (.*$)/gim, '<blockquote>$1</blockquote>')
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\*(.*?)\*/g, '<em>$1</em>')
+          .replace(/\[(.*?)\]\((.*?)\)/g, '<a href="$2" class="text-primary font-500 hover:underline">$1</a>')
+          .replace(/^\- (.*$)/gim, '<li>$1</li>');
+        
+        var paragraphs = html.split('\n\n');
+        return paragraphs.map(function(p) {
+          p = p.trim();
+          if (p.startsWith('<h') || p.startsWith('<blockquote') || p.startsWith('<li>')) return p;
+          return '<p>' + p + '</p>';
+        }).join('');
+      }
+
+      window.openArticle = function (slug) {
+        var post = posts.find(function (p) { return p.slug === slug; });
+        if (!post) return;
+
+        window.location.hash = slug;
+
+        document.getElementById('article-title').innerText = post.title;
+        document.getElementById('article-date').innerText = post.date;
+        document.getElementById('article-rt').innerText = post.readingTime;
+        document.getElementById('article-tags').innerHTML = (post.tags || []).map(function(t){
+          return '<span style="font-size: 0.75rem; padding: 0.25rem 0.65rem; border-radius: 9999px; background: var(--secondary); color: var(--foreground); font-weight: 500;">' + t + '</span>';
+        }).join('');
+
+        document.getElementById('article-content').innerHTML = parseMarkdown(post.content);
+
+        // Related Posts
+        var related = posts.filter(function (p) { return p.slug !== slug; }).slice(0, 2);
+        document.getElementById('article-related-grid').innerHTML = related.map(function (r) {
+          return `
+            <div class="card" style="padding: 1.25rem; cursor: pointer;" onclick="openArticle('${r.slug}')">
+              <div style="font-size: 0.75rem; color: var(--muted-foreground); margin-bottom: 0.25rem;">${r.readingTime}</div>
+              <h4 style="font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;">${r.title}</h4>
+              <span style="font-size: 0.8125rem; font-weight: 600; color: var(--primary);">Read guide &rarr;</span>
+            </div>
+          `;
+        }).join('');
+
+        hubView.style.display = 'none';
+        readerView.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      backBtn.onclick = function () {
+        window.location.hash = '';
+        readerView.style.display = 'none';
+        hubView.style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      };
+
+      if (searchInput) {
+        searchInput.oninput = function () {
+          searchQuery = searchInput.value;
+          renderPosts();
+        };
+      }
+
+      // Handle direct hash navigation
+      function checkHash() {
+        var hash = window.location.hash.replace('#', '').trim();
+        if (hash) {
+          openArticle(hash);
+        } else {
+          readerView.style.display = 'none';
+          hubView.style.display = 'block';
+        }
+      }
+
+      window.addEventListener('hashchange', checkHash);
+
+      renderTags();
+      renderPosts();
+      checkHash();
+    })();
+  </script>
+</body>
+</html>
