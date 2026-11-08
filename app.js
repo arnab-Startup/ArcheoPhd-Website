@@ -389,7 +389,8 @@ function initStickyCta() {
 
   window.addEventListener('scroll', () => {
     if (!stickyDismissed) {
-      if (window.scrollY > 550) {
+      const scrollBottom = document.documentElement.scrollHeight - window.innerHeight - window.scrollY;
+      if (window.scrollY > 550 && scrollBottom > 180) {
         stickyCta.style.display = 'block';
       } else {
         stickyCta.style.display = 'none';
