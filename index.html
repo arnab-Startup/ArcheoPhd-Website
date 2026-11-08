@@ -309,26 +309,26 @@
     <section class="section section-alt" id="interactive-lab">
       <div class="container">
         <div class="section-header center">
-          <span class="tag-label">Live C++ Engine Demo</span>
-          <h2 class="section-title">Interactive Archaeological Reasoning</h2>
+          <span class="tag-label">Interactive AI Reasoning Lab</span>
+          <h2 class="section-title">AI-Powered Archaeological Analysis</h2>
           <p class="section-subtitle">
-            Experience the algorithmic precision running on-device: IntCal20 radiocarbon splines and Harris matrix cycle detection.
+            Experience on-device AI reasoning across archaeological records: chronological date disambiguation and stratigraphic contradiction detection.
           </p>
         </div>
 
         <div class="lab-card">
           <div class="lab-tabs-header">
-            <button class="lab-tab-btn active" onclick="switchLabTab('lab-tab-c14')">1. IntCal20 C-14 Calibration</button>
-            <button class="lab-tab-btn" onclick="switchLabTab('lab-tab-harris')">2. Harris Matrix Cycle Validator</button>
+            <button class="lab-tab-btn active" onclick="switchLabTab('lab-tab-c14')">1. AI Chronology &amp; Calibration</button>
+            <button class="lab-tab-btn" onclick="switchLabTab('lab-tab-harris')">2. AI Stratigraphic Contradiction Detector</button>
           </div>
 
           <!-- Tab 1: C-14 Calibration -->
           <div id="lab-tab-c14" class="lab-tab-pane active">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
               <div>
-                <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">C-14 Radiocarbon Calibration</h3>
+                <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">AI Radiocarbon &amp; Chronology Reasoner</h3>
                 <p class="text-muted" style="font-size: 0.875rem; margin-bottom: 1.25rem;">
-                  Computes high-precision calibrated calendar dates using atmospheric radiocarbon calibration curves.
+                  Synthesizes conventional radiocarbon measurements with stratigraphic context to propose calibrated calendar ranges.
                 </p>
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
                   <div>
@@ -363,16 +363,16 @@
           <div id="lab-tab-harris" class="lab-tab-pane">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
               <div>
-                <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Harris Matrix Topological Validator</h3>
+                <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">AI Stratigraphic Contradiction Detector</h3>
                 <p class="text-muted" style="font-size: 0.875rem; margin-bottom: 1.25rem;">
-                  Enforces Steno's Law of Superposition. Kahn's topological sort detects cyclic stratigraphic impossibilities.
+                  Enforces archaeological superposition laws. AI reasoning identifies inverted deposits, chronological conflicts, and physical impossibilities across excavation records.
                 </p>
                 <button class="btn btn-secondary" id="harris-toggle-conflict">Inject Stratigraphic Paradox</button>
               </div>
 
               <div style="background-color: var(--secondary); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border);">
-                <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--accent); margin-bottom: 0.35rem;">Algorithm Status</div>
-                <div id="harris-status-badge" style="font-family: var(--font-body); font-weight: 700; font-size: 1rem; color: #2E7D32; margin-bottom: 0.5rem;">VALID STRATIGRAPHIC SEQUENCE (Acyclic)</div>
+                <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--accent); margin-bottom: 0.35rem;">Reasoning Status</div>
+                <div id="harris-status-badge" style="font-family: var(--font-body); font-weight: 700; font-size: 1rem; color: #2E7D32; margin-bottom: 0.5rem;">VALID STRATIGRAPHIC SEQUENCE (Consistent)</div>
                 <div id="harris-status-desc" style="font-size: 0.8125rem; color: var(--muted-foreground); line-height: 1.5;">Topological ordering: Context 101 (Topsoil) &rarr; Context 102 (Hearth fill) &rarr; Context 103 (Foundation trench). Consistent with Superposition Law.</div>
               </div>
             </div>

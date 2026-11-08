@@ -257,20 +257,20 @@ function initHarrisMatrixLab() {
     if (hasConflict) {
       toggleConflictBtn.textContent = 'Remove Contradictory Stratum Relation';
       toggleConflictBtn.classList.add('btn-secondary');
-      statusBadge.textContent = 'PARADOX DETECTED (Cycle in Matrix)';
+      statusBadge.textContent = 'CONTRADICTION DETECTED (Stratigraphic Conflict)';
       statusBadge.style.background = 'rgba(244, 63, 94, 0.2)';
       statusBadge.style.color = '#fb7185';
       statusBadge.style.borderColor = 'rgba(244, 63, 94, 0.5)';
-      statusDesc.textContent = 'Topological sort failed (Kahn\'s Algorithm): Stratum [Context 103] cannot both precede and succeed [Context 101]. Physical impossibility flagged!';
+      statusDesc.textContent = 'AI Stratigraphic Analysis: Stratum [Context 103] cannot both precede and succeed [Context 101]. Physical impossibility flagged!';
       if (conflictArrow) conflictArrow.style.display = 'block';
     } else {
       toggleConflictBtn.textContent = 'Inject Stratigraphic Paradox';
       toggleConflictBtn.classList.remove('btn-secondary');
-      statusBadge.textContent = 'VALID STRATIGRAPHIC SEQUENCE (Acyclic)';
+      statusBadge.textContent = 'VALID STRATIGRAPHIC SEQUENCE (Consistent)';
       statusBadge.style.background = 'rgba(16, 185, 129, 0.2)';
       statusBadge.style.color = '#34d399';
       statusBadge.style.borderColor = 'rgba(16, 185, 129, 0.5)';
-      statusDesc.textContent = 'Topological ordering: Context 101 (Topsoil) → Context 102 (Hearth fill) → Context 103 (Foundation trench). Consistent with Superposition Law.';
+      statusDesc.textContent = 'AI Sequence Analysis: Context 101 (Topsoil) -> Context 102 (Hearth fill) -> Context 103 (Foundation trench). Stratigraphy consistent.';
       if (conflictArrow) conflictArrow.style.display = 'none';
     }
   });
