@@ -1705,3 +1705,140 @@ a {
   .sites-showcase-grid { grid-template-columns: 1fr; }
   .blog-grid-3 { grid-template-columns: 1fr; }
 }
+
+/* =========================================================================
+   AI Research Gap Explorer Showcase
+   ========================================================================= */
+.gap-explorer-card {
+  background-color: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.gap-explorer-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.gap-explorer-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 0.85rem;
+  border-radius: var(--radius-sm);
+  background-color: rgba(180, 83, 9, 0.08);
+  border: 1px solid rgba(180, 83, 9, 0.22);
+  color: #92400e;
+  font-size: 0.8125rem;
+  font-weight: 500;
+}
+
+.gap-explorer-tag {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted-foreground);
+  background-color: var(--muted);
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm);
+}
+
+.gap-explorer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+}
+
+.gap-group-item {
+  background-color: var(--background);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.gap-group-span {
+  grid-column: 1 / -1;
+  background-color: rgba(185, 28, 28, 0.02);
+  border-color: rgba(185, 28, 28, 0.18);
+}
+
+.gap-group-head {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.gap-group-head h4 {
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--foreground);
+  margin: 0;
+  flex: 1 1 auto;
+}
+
+.gap-group-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.text-accent { color: var(--accent); }
+.text-chart-2 { color: #0e7490; }
+.text-chart-4 { color: #b45309; }
+.text-chart-5 { color: #7c3aed; }
+.text-destructive { color: #b91c1c; }
+
+.gap-count-pill {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  border-radius: 999px;
+  background-color: var(--muted);
+  color: var(--muted-foreground);
+  border: 1px solid var(--border);
+}
+
+.gap-group-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.gap-group-list li {
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: var(--foreground);
+  position: relative;
+  padding-left: 1rem;
+}
+
+.gap-group-list li::before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--accent);
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .gap-explorer-grid { grid-template-columns: 1fr; }
+  .gap-explorer-header { flex-direction: column; align-items: flex-start; }
+}
