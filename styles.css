@@ -645,41 +645,58 @@ a {
 .pricing-toggle-wrap {
   display: inline-flex;
   align-items: center;
-  background-color: rgba(35, 31, 28, 0.06);
-  padding: 0.25rem;
+  background-color: #ede8e1;
+  padding: 0.35rem;
   border-radius: 9999px;
-  border: 1px solid var(--border);
-  margin-top: 1.25rem;
-  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.04);
+  border: 1.5px solid rgba(113, 50, 29, 0.18);
+  margin-top: 1.5rem;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
 }
 
 .curr-btn {
   border: none;
   outline: none;
   background: transparent;
-  color: var(--muted-foreground);
+  color: #57534e;
   font-family: var(--font-body);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  padding: 0.45rem 1.15rem;
+  padding: 0.55rem 1.35rem;
   border-radius: 9999px;
   cursor: pointer;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
+  gap: 0.5rem;
+  user-select: none;
+}
+
+.curr-btn .curr-indicator {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 2px solid #a8a29e;
+  background-color: transparent;
+  transition: all 0.2s ease;
 }
 
 .curr-btn:hover:not(.active) {
-  color: var(--foreground);
-  background-color: rgba(35, 31, 28, 0.05);
+  color: #1c1917;
+  background-color: rgba(35, 31, 28, 0.06);
 }
 
 .curr-btn.active {
-  background-color: var(--primary) !important;
-  color: var(--primary-foreground) !important;
-  font-weight: 600 !important;
-  box-shadow: 0 2px 8px rgba(113, 50, 29, 0.35);
+  background-color: #71321d !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 3px 10px rgba(113, 50, 29, 0.45), 0 1px 2px rgba(0, 0, 0, 0.15) !important;
+}
+
+.curr-btn.active .curr-indicator {
+  border-color: #ffffff !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 0 6px rgba(255, 255, 255, 0.8) !important;
 }
 
 /* Pricing Grid (Mirror of Pricing.jsx) */

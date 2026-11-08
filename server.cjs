@@ -60,6 +60,9 @@ const server = http.createServer((req, res) => {
     if (isDownload) {
       headers['Content-Disposition'] = `attachment; filename="${filename}"`;
       headers['Cache-Control'] = 'no-store, no-cache, must-revalidate';
+    } else {
+      // In local dev, prevent aggressive caching of CSS/JS/HTML so live edits are reflected immediately
+      headers['Cache-Control'] = 'no-cache, must-revalidate';
     }
 
     res.writeHead(200, headers);

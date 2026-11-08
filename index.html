@@ -17,7 +17,7 @@
   <link rel="apple-touch-icon" href="/app-logo-mark.png">
   
   <!-- Styles -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body class="paper-grain">
 
@@ -1035,9 +1035,9 @@
           <span class="tag-label">Pricing & Licensing</span>
           <h2 class="section-title">Built for the long arc of a PhD.</h2>
           <p class="section-subtitle">India pricing shown first; international pricing in parentheses.</p>
-          <div class="pricing-toggle-wrap">
-            <button type="button" class="curr-btn active" data-curr="INR">India (INR ₹)</button>
-            <button type="button" class="curr-btn" data-curr="USD">International (USD $)</button>
+          <div class="pricing-toggle-wrap" role="group" aria-label="Currency selection">
+            <button type="button" class="curr-btn active" data-curr="INR"><span class="curr-indicator"></span>India (INR ₹)</button>
+            <button type="button" class="curr-btn" data-curr="USD"><span class="curr-indicator"></span>International (USD $)</button>
           </div>
         </div>
 
@@ -1239,6 +1239,6 @@
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>
