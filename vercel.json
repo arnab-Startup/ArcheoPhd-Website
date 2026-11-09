@@ -1,0 +1,13 @@
+{
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/blog/:slug((?!.*\\.).*)",
+      "destination": "/blog/index.html"
+    },
+    {
+      "source": "/(problem|how|graph|interactive-lab|ai|sites|chronology|thesis|voice|collaboration|pricing|faq|downloads|security|about)",
+      "destination": "/index.html"
+    }
+  ]
+}
