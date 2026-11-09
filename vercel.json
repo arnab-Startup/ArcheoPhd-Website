@@ -2,7 +2,7 @@
   "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/blog/:slug((?!.*\\.).*)",
+      "source": "/blog/(.*)",
       "destination": "/blog/index.html"
     },
     {
