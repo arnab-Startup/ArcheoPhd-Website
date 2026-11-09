@@ -12,8 +12,12 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="/app-logo-mark.png">
+  <link rel="apple-touch-icon" href="/app-logo-mark.png">
+  
   <!-- Styles -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=2">
 </head>
 <body class="paper-grain">
 
@@ -21,34 +25,28 @@
        Navigation Bar (Mirror of LandingNav.jsx)
        ========================================================================= -->
   <header class="navbar" id="main-navbar">
-    <div class="container">
-      <a href="#hero" class="nav-brand" id="nav-brand-logo">
+    <div class="navbar-inner">
+      <a href="/" class="nav-brand" id="nav-brand-logo">
         <span class="nav-brand-plaque">
-          <!-- Strata Monogram — Ivory Relief -->
-          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-            <path d="M12 3.2 L18.8 20.6 H5.2 Z" fill="#94462A" />
-            <path d="M12 8.4 L14.5 14.2 H9.5 Z" fill="#F5F0E6" />
-            <rect x="7" y="16.4" width="10" height="1.1" fill="#F5F0E6" />
-            <rect x="6.2" y="18.4" width="11.6" height="0.9" fill="#F5F0E6" opacity="0.7" />
-            <circle cx="12" cy="3.2" r="1.9" fill="#C89B3C" />
-          </svg>
+          <img src="/app-logo-mark.png" alt="ArchaeoPhD Logo" width="36" height="36" class="nav-brand-logo-img">
         </span>
         <span class="nav-brand-text">ArchaeoPhD</span>
       </a>
 
-      <nav>
+      <nav class="nav-menu">
         <ul class="nav-links">
-          <li><a href="#problem" class="nav-link">The Problem</a></li>
-          <li><a href="#how" class="nav-link">How it Works</a></li>
-          <li><a href="#graph" class="nav-link">Evidence Graph</a></li>
-          <li><a href="#interactive-lab" class="nav-link">Interactive Lab</a></li>
-          <li><a href="#pricing" class="nav-link">Pricing</a></li>
-          <li><a href="#faq" class="nav-link">FAQ</a></li>
+          <li><a href="/problem" class="nav-link">Problem</a></li>
+          <li><a href="/graph" class="nav-link">Evidence Graph</a></li>
+          <li><a href="/ai" class="nav-link">AI Assistant</a></li>
+          <li><a href="/sites" class="nav-link">Sites</a></li>
+          <li><a href="/chronology" class="nav-link">Chronology</a></li>
+          <li><a href="/thesis" class="nav-link">Thesis</a></li>
+          <li><a href="/blog" class="nav-link">Blog</a></li>
+          <li><a href="/pricing" class="nav-link">Pricing</a></li>
         </ul>
       </nav>
 
       <div class="nav-actions">
-        <a href="#interactive-lab" class="btn btn-secondary btn-sm" id="nav-btn-demo">Explore Demo</a>
         <a href="downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" class="btn btn-primary btn-sm" id="nav-btn-download">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
           Download for Windows
@@ -84,7 +82,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
                 Download for Windows
               </a>
-              <a href="#interactive-lab" class="btn btn-secondary btn-lg" id="btn-hero-demo">
+              <a href="/interactive-lab" class="btn btn-secondary btn-lg" id="btn-hero-demo">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 Explore Demo
               </a>
@@ -311,26 +309,26 @@
     <section class="section section-alt" id="interactive-lab">
       <div class="container">
         <div class="section-header center">
-          <span class="tag-label">Live C++ Engine Demo</span>
-          <h2 class="section-title">Interactive Archaeological Reasoning</h2>
+          <span class="tag-label">Interactive AI Reasoning Lab</span>
+          <h2 class="section-title">AI-Powered Archaeological Analysis</h2>
           <p class="section-subtitle">
-            Experience the algorithmic precision running on-device: IntCal20 radiocarbon splines and Harris matrix cycle detection.
+            Experience on-device AI reasoning across archaeological records: chronological date disambiguation and stratigraphic contradiction detection.
           </p>
         </div>
 
         <div class="lab-card">
           <div class="lab-tabs-header">
-            <button class="lab-tab-btn active" onclick="switchLabTab('lab-tab-c14')">1. IntCal20 C-14 Calibration</button>
-            <button class="lab-tab-btn" onclick="switchLabTab('lab-tab-harris')">2. Harris Matrix Cycle Validator</button>
+            <button class="lab-tab-btn active" onclick="switchLabTab('lab-tab-c14')">1. AI Chronology &amp; Calibration</button>
+            <button class="lab-tab-btn" onclick="switchLabTab('lab-tab-harris')">2. AI Stratigraphic Contradiction Detector</button>
           </div>
 
           <!-- Tab 1: C-14 Calibration -->
           <div id="lab-tab-c14" class="lab-tab-pane active">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
               <div>
-                <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">C-14 Radiocarbon Calibration</h3>
+                <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">AI Radiocarbon &amp; Chronology Reasoner</h3>
                 <p class="text-muted" style="font-size: 0.875rem; margin-bottom: 1.25rem;">
-                  Computes high-precision calibrated calendar dates using atmospheric radiocarbon calibration curves.
+                  Synthesizes conventional radiocarbon measurements with stratigraphic context to propose calibrated calendar ranges.
                 </p>
                 <div style="display: flex; flex-direction: column; gap: 1rem;">
                   <div>
@@ -365,20 +363,585 @@
           <div id="lab-tab-harris" class="lab-tab-pane">
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start;">
               <div>
-                <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">Harris Matrix Topological Validator</h3>
+                <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">AI Stratigraphic Contradiction Detector</h3>
                 <p class="text-muted" style="font-size: 0.875rem; margin-bottom: 1.25rem;">
-                  Enforces Steno's Law of Superposition. Kahn's topological sort detects cyclic stratigraphic impossibilities.
+                  Enforces archaeological superposition laws. AI reasoning identifies inverted deposits, chronological conflicts, and physical impossibilities across excavation records.
                 </p>
                 <button class="btn btn-secondary" id="harris-toggle-conflict">Inject Stratigraphic Paradox</button>
               </div>
 
               <div style="background-color: var(--secondary); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border);">
-                <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--accent); margin-bottom: 0.35rem;">Algorithm Status</div>
-                <div id="harris-status-badge" style="font-family: var(--font-body); font-weight: 700; font-size: 1rem; color: #2E7D32; margin-bottom: 0.5rem;">VALID STRATIGRAPHIC SEQUENCE (Acyclic)</div>
+                <div style="font-size: 0.75rem; font-weight: 600; text-transform: uppercase; color: var(--accent); margin-bottom: 0.35rem;">Reasoning Status</div>
+                <div id="harris-status-badge" style="font-family: var(--font-body); font-weight: 700; font-size: 1rem; color: #2E7D32; margin-bottom: 0.5rem;">VALID STRATIGRAPHIC SEQUENCE (Consistent)</div>
                 <div id="harris-status-desc" style="font-size: 0.8125rem; color: var(--muted-foreground); line-height: 1.5;">Topological ordering: Context 101 (Topsoil) &rarr; Context 102 (Hearth fill) &rarr; Context 103 (Foundation trench). Consistent with Superposition Law.</div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =========================================================================
+         AI Research Assistant Section (#ai)
+         ========================================================================= -->
+    <section class="section section-alt" id="ai">
+      <div class="container">
+        <div class="section-header">
+          <span class="tag-label">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+            Evidence Mode
+          </span>
+          <h2 class="section-title">Answers grounded in your excavation reports. Never fabricated.</h2>
+          <p class="section-subtitle">
+            Query your entire bibliography, trench notes, and artifact databases. ArchaeoPhD enforces a strict 4-part evidentiary split for every response.
+          </p>
+        </div>
+
+        <div class="ai-evidence-grid">
+          <div class="ai-evidence-card ai-card-answer">
+            <div class="ai-card-badge">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <span>1. Direct Synthesis</span>
+            </div>
+            <h4 class="ai-card-title">Clear Scholarly Summary</h4>
+            <p class="ai-card-body">
+              Radiocarbon dates from Stratum VIA at Megiddo cluster between 1010-970 BCE (95.4% confidence), supporting an Iron IIA transition rather than late 10th-century destruction horizons.
+            </p>
+          </div>
+
+          <div class="ai-evidence-card ai-card-evidence">
+            <div class="ai-card-badge">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+              <span>2. Corroborating Evidence</span>
+            </div>
+            <h4 class="ai-card-title">Excavation Finds &amp; Context</h4>
+            <p class="ai-card-body">
+              3 short-lived olive pit samples (RTT-5021, RTT-5024) retrieved from primary destruction fill adjacent to City Wall 325. Ceramic assemblage: Black-on-Red and red-slipped burnished bowls.
+            </p>
+          </div>
+
+          <div class="ai-evidence-card ai-card-sources">
+            <div class="ai-card-badge">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+              <span>3. Exact Source Citations</span>
+            </div>
+            <h4 class="ai-card-title">Verified Page &amp; Trench Records</h4>
+            <p class="ai-card-body">
+              Finkelstein et al. (2021) <em>Radiocarbon</em> 63(2), pp. 412-429; Ussishkin (2018) <em>Tel Aviv</em> 45(1), p. 88; Megiddo Expedition Field Report Vol. V, locus 04/M/18.
+            </p>
+          </div>
+
+          <div class="ai-evidence-card ai-card-uncertainty">
+            <div class="ai-card-badge">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span>4. Declared Uncertainty</span>
+            </div>
+            <h4 class="ai-card-title">Stratigraphic Disagreements</h4>
+            <p class="ai-card-body">
+              High Chronology proponents (Mazar 2020) associate the destruction layer with Shoshenq I (c. 925 BCE), attributing the earlier C14 results to old-wood calibration lag.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Site Intelligence Section (#sites)
+         ========================================================================= -->
+    <section class="section" id="sites">
+      <div class="container">
+        <div class="section-header">
+          <span class="tag-label">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Spatial &amp; Stratigraphic Intelligence
+          </span>
+          <h2 class="section-title">Site database linked to stratigraphy and catalogs.</h2>
+          <p class="section-subtitle">
+            Every excavation site links strata, occupational horizons, artifact counts, and field documentation in one structured registry.
+          </p>
+        </div>
+
+        <div class="sites-showcase-grid">
+          <div class="site-card">
+            <div class="site-card-header">
+              <div class="site-badge">Tell / Multi-Period</div>
+              <span class="site-strata">8 Strata Cataloged</span>
+            </div>
+            <h3 class="site-title">Tell Megiddo</h3>
+            <p class="site-region">Jezreel Valley, Northern District</p>
+            <div class="site-stats">
+              <div class="site-stat-item">
+                <span class="stat-number">142</span>
+                <span class="stat-name">Claims</span>
+              </div>
+              <div class="site-stat-item">
+                <span class="stat-number">389</span>
+                <span class="stat-name">Artifacts</span>
+              </div>
+              <div class="site-stat-item">
+                <span class="stat-number">18</span>
+                <span class="stat-name">C14 Dates</span>
+              </div>
+            </div>
+            <p class="site-summary">Key occupational sequence spanning Early Bronze through Persian periods. Crucial benchmark for Iron Age chronology debates.</p>
+          </div>
+
+          <div class="site-card">
+            <div class="site-card-header">
+              <div class="site-badge">Fortified Enclosure</div>
+              <span class="site-strata">4 Strata Cataloged</span>
+            </div>
+            <h3 class="site-title">Khirbet Qeiyafa</h3>
+            <p class="site-region">Elah Valley, Shephelah</p>
+            <div class="site-stats">
+              <div class="site-stat-item">
+                <span class="stat-number">88</span>
+                <span class="stat-name">Claims</span>
+              </div>
+              <div class="site-stat-item">
+                <span class="stat-number">215</span>
+                <span class="stat-name">Artifacts</span>
+              </div>
+              <div class="site-stat-item">
+                <span class="stat-number">12</span>
+                <span class="stat-name">C14 Dates</span>
+              </div>
+            </div>
+            <p class="site-summary">Single-period fortified city from early 10th century BCE. Distinct casemate wall and proto-Canaanite ostracon inscription.</p>
+          </div>
+
+          <div class="site-card">
+            <div class="site-card-header">
+              <div class="site-badge">Stratified Tell</div>
+              <span class="site-strata">12 Strata Cataloged</span>
+            </div>
+            <h3 class="site-title">Tell es-Sultan (Jericho)</h3>
+            <p class="site-region">Jordan Valley, West Bank</p>
+            <div class="site-stats">
+              <div class="site-stat-item">
+                <span class="stat-number">110</span>
+                <span class="stat-name">Claims</span>
+              </div>
+              <div class="site-stat-item">
+                <span class="stat-number">520</span>
+                <span class="stat-name">Artifacts</span>
+              </div>
+              <div class="site-stat-item">
+                <span class="stat-number">24</span>
+                <span class="stat-name">C14 Dates</span>
+              </div>
+            </div>
+            <p class="site-summary">Neolithic through Middle Bronze fortifications. Reference sequence for Kenyon and Garstang chronological revisions.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Chronology Engine Section (#chronology)
+         ========================================================================= -->
+    <section class="section section-alt" id="chronology">
+      <div class="container">
+        <div class="section-header">
+          <span class="tag-label">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            Chronology Engine
+          </span>
+          <h2 class="section-title">BCE/CE visual timeline with contradiction detection.</h2>
+          <p class="section-subtitle">
+            Preserve original dating wording (BCE, CE, BP, Calibrated). When scholarly publications disagree on dates, ArchaeoPhD highlights disputes instead of silently averaging them.
+          </p>
+        </div>
+
+        <div class="chronology-demo-card">
+          <div class="chronology-header-strip">
+            <span class="chronology-lead-title">Occupational Timeline: Southern Levant Transition (1200 - 800 BCE)</span>
+            <span class="chronology-conflict-pill">
+              <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              1 Active Chronological Dispute Detected
+            </span>
+          </div>
+
+          <div class="chronology-axis">
+            <div class="axis-mark" style="left: 0%;"><span>1200 BCE</span></div>
+            <div class="axis-mark" style="left: 25%;"><span>1100 BCE</span></div>
+            <div class="axis-mark" style="left: 50%;"><span>1000 BCE</span></div>
+            <div class="axis-mark" style="left: 75%;"><span>900 BCE</span></div>
+            <div class="axis-mark" style="left: 100%;"><span>800 BCE</span></div>
+          </div>
+
+          <div class="chronology-bars">
+            <div class="chronology-track">
+              <div class="track-label">Traditional / High Chronology (Mazar, Stager)</div>
+              <div class="track-bar track-bar-high" style="left: 35%; width: 35%;">
+                <span class="bar-text">Iron IIA: 1000 - 925 BCE (United Monarchy Horizon)</span>
+              </div>
+            </div>
+
+            <div class="chronology-track">
+              <div class="track-label">Low Chronology (Finkelstein, Silberman)</div>
+              <div class="track-bar track-bar-low" style="left: 50%; width: 35%;">
+                <span class="bar-text">Iron IIA: 940 - 830 BCE (Omride Dynasty Horizon)</span>
+              </div>
+            </div>
+
+            <div class="chronology-track">
+              <div class="track-label">Modified Conventional Chronology (Mazar 2005)</div>
+              <div class="track-bar track-bar-mod" style="left: 42%; width: 33%;">
+                <span class="bar-text">Iron IIA: 980 - 850 BCE (Overlapping Span)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="chronology-footnote">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+            <span>ArchaeoPhD retains every calibrated date range and flags contradictory stratigraphic anchors so your thesis defense stands on rock-solid citations.</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Thesis & Dissertation Studio Section (#thesis)
+         ========================================================================= -->
+    <section class="section" id="thesis">
+      <div class="container">
+        <div class="section-header">
+          <span class="tag-label">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+            Dissertation Studio
+          </span>
+          <h2 class="section-title">Word &amp; Google Docs-style thesis writing canvas.</h2>
+          <p class="section-subtitle">
+            Write one chapter at a time with fast single-chapter loading, real-time AI evidence verification, automatic footnote citations, and scholarly font formatting.
+          </p>
+        </div>
+
+        <div class="thesis-preview-window">
+          <!-- Ribbon Toolbar -->
+          <div class="thesis-ribbon">
+            <div class="ribbon-group">
+              <span class="ribbon-btn ribbon-btn-active">Heading 2</span>
+              <span class="ribbon-btn">Times New Roman</span>
+              <span class="ribbon-btn">12pt</span>
+            </div>
+            <div class="ribbon-separator"></div>
+            <div class="ribbon-group">
+              <span class="ribbon-tool-btn" title="Bold"><b>B</b></span>
+              <span class="ribbon-tool-btn" title="Italic"><i>I</i></span>
+              <span class="ribbon-tool-btn" title="Underline"><u>U</u></span>
+              <span class="ribbon-tool-btn" title="Strikethrough"><s>S</s></span>
+            </div>
+            <div class="ribbon-separator"></div>
+            <div class="ribbon-group">
+              <span class="ribbon-pill-btn">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/></svg>
+                AI Proofreader Active
+              </span>
+              <span class="ribbon-pill-btn">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+                Insert Citation
+              </span>
+            </div>
+          </div>
+
+          <!-- Document Canvas -->
+          <div class="thesis-page-canvas">
+            <div class="thesis-paper">
+              <div class="thesis-running-header">
+                <span>CHAPTER IV: STRATIGRAPHY AND CHRONOLOGY</span>
+                <span>PAGE 84</span>
+              </div>
+              <h3 class="thesis-doc-heading">4.3 The Radiocarbon Horizon of Stratum VIA</h3>
+              <p class="thesis-doc-para">
+                The chronological attribution of Stratum VIA at Tell Megiddo represents a fundamental crux in Levantine Iron Age archaeological sequencing. While traditional scholarship correlated the destruction layer with military incursions under Pharaoh Shoshenq I, subsequent AMS radiometric dating campaigns of short-lived charred olive pits demonstrate a clustering around the late eleventh and early tenth centuries BCE<sup>[14]</sup>.
+              </p>
+              <div class="thesis-ai-inline-badge">
+                <div class="badge-icon">
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                </div>
+                <div class="badge-content">
+                  <strong>AI Citation Check Passed:</strong> Statement matches 4 library sources (Finkelstein 2021; Ussishkin 2018; Megiddo IV Report; Sharon 2020). No unanchored claims detected.
+                </div>
+              </div>
+              <p class="thesis-doc-para">
+                Consequently, the ceramic sequence retrieved from Locus 04/M/18 cannot be evaluated in isolation from the stratigraphic interface of City Wall 325, demanding a rigorous re-examination of regional cross-craft ceramic synchronisms.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Voice Research & Supervisor Strip (#voice, #collaboration)
+         ========================================================================= -->
+    <section class="section section-alt" id="voice">
+      <div class="container">
+        <div class="showcase-row">
+          <div class="showcase-content">
+            <span class="tag-label">
+              <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              Voice Research
+            </span>
+            <h2 class="section-title">Ask by voice. Review transcripts. Stay in control.</h2>
+            <p class="section-subtitle">
+              Dictate field trench observations or speak questions to your research corpus hands-free. Audio is never recorded in background mode — tap to record, verify the editable transcript, and commit to your notes.
+            </p>
+            <ul class="feature-bullets" style="margin-top: 1.5rem;">
+              <li>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Zero background recording: microphone triggers only on explicit tap</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Full editable review before queries query your evidence graph</span>
+              </li>
+              <li>
+                <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                <span>Playback rate options (0.75x, 1.0x, 1.25x, 1.5x) for reviewing audio notes</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="showcase-visual">
+            <div class="voice-card">
+              <div class="voice-card-top">
+                <div class="mic-pulsing-badge">
+                  <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+                </div>
+                <div>
+                  <div class="voice-status">Voice Query Active</div>
+                  <div class="voice-timer">00:14 / 01:00</div>
+                </div>
+              </div>
+              <div class="voice-transcript-box">
+                <span class="transcript-label">Transcribed Field Note:</span>
+                <p class="transcript-text">"What excavation evidence in Area B contradicts the Omride construction hypothesis for the casemate wall?"</p>
+              </div>
+              <div class="voice-controls">
+                <div class="speed-pills">
+                  <span class="speed-pill">0.75x</span>
+                  <span class="speed-pill speed-pill-active">1.0x</span>
+                  <span class="speed-pill">1.25x</span>
+                  <span class="speed-pill">1.5x</span>
+                </div>
+                <button class="btn btn-primary btn-sm">Process Note</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Strip: Supervisor Collaboration, Site Comparison, Chronology Engine -->
+    <section class="section" id="collaboration">
+      <div class="container">
+        <div class="cards-grid-3">
+          <div class="feature-card">
+            <div class="feature-card-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            </div>
+            <h3 class="feature-card-title">Supervisor Collaboration</h3>
+            <p class="feature-card-desc">Invite committee members and co-authors. Collaborators see only what you publish — private draft notes remain strictly personal.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-card-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+            </div>
+            <h3 class="feature-card-title">Cross-Site Comparison</h3>
+            <p class="feature-card-desc">Compare stratigraphy, ceramic typologies, radiocarbon spreads, and architectural styles across multiple excavation sites side-by-side.</p>
+          </div>
+
+          <div class="feature-card">
+            <div class="feature-card-icon">
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+            </div>
+            <h3 class="feature-card-title">Security &amp; Local Privacy</h3>
+            <p class="feature-card-desc">Private by default. All data remains in your local database or authenticated project boundary. No unverified third-party training.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         AI Research Gap Analyzer Section (#gap-explorer)
+         ========================================================================= -->
+    <section class="section" id="gap-explorer">
+      <div class="container">
+        <div class="section-header">
+          <span class="tag-label">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg>
+            Pure AI Epistemic Engine
+          </span>
+          <h2 class="section-title">AI Research Gap Analyzer</h2>
+          <p class="section-subtitle">
+            Uncover doctoral dissertation gaps directly from your research library. High-accuracy neural synthesis across excavation monographs, stratigraphic sequences, and claims discovers what is saturated, what is missing, and where scholars disagree.
+          </p>
+        </div>
+
+        <div class="gap-explorer-card">
+          <div class="gap-explorer-header">
+            <div class="gap-explorer-badge">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <span>Potential Research Gap — Researcher Verification Required. Derived directly from your library context.</span>
+            </div>
+            <div class="gap-explorer-tag">5-Dimensional Scholarly Synthesis</div>
+          </div>
+
+          <div class="gap-explorer-grid">
+            <!-- 1. Frequently Studied -->
+            <div class="gap-group-item">
+              <div class="gap-group-head">
+                <div class="gap-group-icon text-accent">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                </div>
+                <h4>Frequently Studied</h4>
+                <span class="gap-count-pill">3 Clusters</span>
+              </div>
+              <ul class="gap-group-list">
+                <li>Mature Harappan urban drainage &amp; brick ratios (over 45 primary excavation papers cited).</li>
+                <li>Painted Grey Ware (PGW) ceramic stratigraphy across Upper Gangetic basin.</li>
+                <li>Monumental fortifications and gateway architecture at Dholavira and Kalibangan.</li>
+              </ul>
+            </div>
+
+            <!-- 2. Poorly Represented -->
+            <div class="gap-group-item">
+              <div class="gap-group-head">
+                <div class="gap-group-icon text-chart-4">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
+                </div>
+                <h4>Poorly Represented</h4>
+                <span class="gap-count-pill">Thin Literature</span>
+              </div>
+              <ul class="gap-group-list">
+                <li>Domestic craft activity areas outside citadel precincts (fewer than 2 primary site reports).</li>
+                <li>Systematic archaeobotanical flotation records for micro-botanical crop assemblages.</li>
+                <li>Non-elite burial customs during the Late Harappan regional devolution horizon.</li>
+              </ul>
+            </div>
+
+            <!-- 3. Underrepresented Sites -->
+            <div class="gap-group-item">
+              <div class="gap-group-head">
+                <div class="gap-group-icon text-chart-2">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                </div>
+                <h4>Underrepresented Sites</h4>
+                <span class="gap-count-pill">Sparse Strata</span>
+              </div>
+              <ul class="gap-group-list">
+                <li>Rakhigarhi peripheral satellite mounds (Mounds 6 &amp; 7): geo-coordinates recorded but 0 published strata profiles.</li>
+                <li>Mitathal: sporadic surface survey mentions without stratigraphic context or radiocarbon dating.</li>
+              </ul>
+            </div>
+
+            <!-- 4. Underrepresented Periods -->
+            <div class="gap-group-item">
+              <div class="gap-group-head">
+                <div class="gap-group-icon text-chart-5">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                </div>
+                <h4>Underrepresented Periods</h4>
+                <span class="gap-count-pill">Chronology Gap</span>
+              </div>
+              <ul class="gap-group-list">
+                <li>1900–1600 BCE transition hiatus: radiocarbon gap between mature urban phase and regional agrarian settlements.</li>
+                <li>Early Ochre Coloured Pottery (OCP) stratigraphic overlap with Late Copper Hoards.</li>
+              </ul>
+            </div>
+
+            <!-- 5. Contradictory Interpretations -->
+            <div class="gap-group-item gap-group-span">
+              <div class="gap-group-head">
+                <div class="gap-group-icon text-destructive">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                </div>
+                <h4>Contradictory Interpretations</h4>
+                <span class="gap-count-pill">Active Scholarly Dispute</span>
+              </div>
+              <ul class="gap-group-list">
+                <li><strong>Chronological Conflict:</strong> Lal (1955) assigns Hastinapura Period II to 1100–800 BCE via typo-chronology, whereas modern calibrated radiocarbon series (Possehl 2002) dates equivalent strata to 1250–950 BCE.</li>
+                <li><strong>Paleo-Environmental Dispute:</strong> Fluvial drought hypothesis (Dixit et al. 2014) contradicts tectonic avulsion model (Valdiya 2002) for Sarasvati river basin desiccation.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         Research Blog Teaser Section (#blog)
+         ========================================================================= -->
+    <section class="section section-alt" id="blog">
+      <div class="container">
+        <div class="section-header">
+          <span class="tag-label">
+            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" style="margin-right: 6px;"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+            Scholarly Publishing
+          </span>
+          <h2 class="section-title">Archaeological Research Insights &amp; Methodologies</h2>
+          <p class="section-subtitle">
+            Long-form guides on evidence modeling, stratigraphy management, and citation hygiene for modern PhD researchers.
+          </p>
+        </div>
+
+        <div class="blog-grid-3">
+            <article class="blog-card">
+              <div class="blog-card-meta">
+                <span class="blog-tag">AI</span>
+                <span class="blog-read-time">7 min read</span>
+              </div>
+              <h3 class="blog-card-title"><a href="/blog/ai-for-archaeological-research">AI for Archaeological Research: How LLMs Help PhD Students Map Evidence</a></h3>
+              <p class="blog-card-desc">How large language models help archaeology PhD students search literature, extract entities from excavation reports, and connect evidence — while keeping every answer traceable to a source.</p>
+              <div class="blog-card-footer">
+                <span class="blog-date">2026-08-10</span>
+                <a href="/blog/ai-for-archaeological-research" class="blog-read-link">
+                  Read Guide
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+            </article>
+            <article class="blog-card">
+              <div class="blog-card-meta">
+                <span class="blog-tag">Research Workflow</span>
+                <span class="blog-read-time">8 min read</span>
+              </div>
+              <h3 class="blog-card-title"><a href="/blog/evidence-based-research-workflow-archaeology">Evidence-Based Research Workflow for Archaeology PhDs: From Field Notes to Defensible Claims</a></h3>
+              <p class="blog-card-desc">A step-by-step evidence-based research workflow for archaeology PhDs — capturing field notes, structuring sources, building claims, linking evidence, and producing a thesis your committee can verify.</p>
+              <div class="blog-card-footer">
+                <span class="blog-date">2026-08-06</span>
+                <a href="/blog/evidence-based-research-workflow-archaeology" class="blog-read-link">
+                  Read Guide
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+            </article>
+            <article class="blog-card">
+              <div class="blog-card-meta">
+                <span class="blog-tag">Field Notes</span>
+                <span class="blog-read-time">6 min read</span>
+              </div>
+              <h3 class="blog-card-title"><a href="/blog/managing-excavation-reports-digitally">Managing Excavation Reports Digitally: Structuring Field Notes, Stratigraphy, and Finds</a></h3>
+              <p class="blog-card-desc">How to manage excavation reports and field notes digitally — structuring stratigraphic units, finds, and contexts so they are searchable, citable, and connected to your dissertation evidence.</p>
+              <div class="blog-card-footer">
+                <span class="blog-date">2026-08-02</span>
+                <a href="/blog/managing-excavation-reports-digitally" class="blog-read-link">
+                  Read Guide
+                  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </a>
+              </div>
+            </article>
+        </div>
+
+        <div class="blog-cta-row">
+          <a href="/blog" class="btn btn-secondary">
+            <span>Explore All 7 Editorial Articles</span>
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
     </section>
@@ -472,9 +1035,9 @@
           <span class="tag-label">Pricing & Licensing</span>
           <h2 class="section-title">Built for the long arc of a PhD.</h2>
           <p class="section-subtitle">India pricing shown first; international pricing in parentheses.</p>
-          <div style="display: inline-flex; background: var(--secondary); padding: 0.25rem; border-radius: var(--radius-full); border: 1px solid var(--border); margin-top: 1.25rem;">
-            <button class="btn btn-sm curr-btn active" data-curr="INR" style="border-radius: var(--radius-full);">India (INR ₹)</button>
-            <button class="btn btn-sm curr-btn" data-curr="USD" style="border-radius: var(--radius-full);">International (USD $)</button>
+          <div class="pricing-toggle-wrap" role="group" aria-label="Currency selection">
+            <button type="button" class="curr-btn active" data-curr="INR"><span class="curr-indicator"></span>India (INR ₹)</button>
+            <button type="button" class="curr-btn" data-curr="USD"><span class="curr-indicator"></span>International (USD $)</button>
           </div>
         </div>
 
@@ -526,19 +1089,19 @@
     </section>
 
     <!-- =========================================================================
-         FAQ Accordion (Mirror of MoreSections.jsx FAQ)
+         FAQ Accordion (Exact Mirror of MoreSections.jsx FAQ)
          ========================================================================= -->
     <section class="section section-alt" id="faq">
       <div class="container">
         <div class="section-header center">
-          <span class="tag-label">Questions & Clarifications</span>
+          <span class="tag-label">Frequently Asked Questions</span>
           <h2 class="section-title">Frequently Asked Questions</h2>
         </div>
 
         <div class="faq-list">
           <div class="faq-item open">
             <button class="faq-question">
-              <span>Does ArchaeoPhD invent citations?</span>
+              <span>Does the AI invent citations?</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="faq-answer">
@@ -558,11 +1121,11 @@
 
           <div class="faq-item">
             <button class="faq-question">
-              <span>Why is the installer ~10 MB when offline models are ~4.8 GB?</span>
+              <span>Can I try it with sample data?</span>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
             </button>
             <div class="faq-answer">
-              The application engine is written in native C++ and installs to C:\ (%LOCALAPPDATA%). During setup, the installer gives you the option to store heavy neural models on an external drive or secondary partition (such as D:\) to preserve your main system drive.
+              Yes. The demo project creates fictional, clearly-labelled demonstration data so you can explore sources, sites, artifacts, claims, contradictions and the Evidence Graph.
             </div>
           </div>
 
@@ -575,6 +1138,39 @@
               No. The Thesis Workspace organizes your claims and evidence and flags gaps, contradictions and missing citations. It never auto-writes chapters or replaces scholarly judgment.
             </div>
           </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>What formats can I upload and export?</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              Upload PDF, DOCX, TXT, CSV, XLSX, JPG, PNG. Export bibliography, evidence, claims, sites, artifacts, notes and chronology as CSV or JSON.
+            </div>
+          </div>
+
+          <div class="faq-item">
+            <button class="faq-question">
+              <span>Is the voice assistant always listening?</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+            </button>
+            <div class="faq-answer">
+              No. The microphone activates only when you tap to record. By default only the transcript is kept and audio can be deleted after transcription.
+            </div>
+          </div>
+        </div>
+
+        <div class="faq-contact-card">
+          <div class="faq-contact-icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </div>
+          <div class="faq-contact-text">
+            <h4>Have additional questions or need project onboarding help?</h4>
+            <p>Our team is here to assist. Email us directly at <a href="mailto:archaeophdai@gmail.com" class="support-email-link">archaeophdai@gmail.com</a></p>
+          </div>
+          <a href="mailto:archaeophdai@gmail.com" class="btn btn-secondary btn-sm faq-contact-btn">
+            Contact Support
+          </a>
         </div>
       </div>
     </section>
@@ -587,29 +1183,11 @@
         <h2 class="section-title">Your archaeological evidence, connected.</h2>
         <p class="section-subtitle">Download the official installer to launch your local research workspace. Complete privacy, zero cloud telemetry, and 100% offline reasoning.</p>
         
-        <div class="hero-cta-group" style="justify-content: center;">
+        <div class="hero-cta-group" style="justify-content: center; margin-bottom: 0;">
           <a href="downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" class="btn btn-primary btn-lg" id="btn-download-bottom">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
             Download for Windows
           </a>
-          <a href="#interactive-lab" class="btn btn-secondary btn-lg">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-            Explore Demo
-          </a>
-        </div>
-
-        <p style="font-size: 0.8125rem; color: rgba(250, 247, 242, 0.75); margin-top: 1.25rem;">
-          Windows 10/11 (64-bit) &middot; 1-Click Setup &middot; Offline AI Workstation &middot; Zero cloud data leakage
-        </p>
-
-        <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 1.25rem; margin-top: 1.5rem; font-size: 0.75rem; color: rgba(250, 247, 242, 0.7);">
-          <a href="downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" style="text-decoration: underline; color: inherit;">1-Click Installer (Setup.exe)</a>
-          <span>&middot;</span>
-          <a href="downloads/ArchaeoPhD.exe" download="ArchaeoPhD.exe" style="text-decoration: underline; color: inherit;">Direct Portable (.exe)</a>
-          <span>&middot;</span>
-          <a href="downloads/ArchaeoPhD-Windows.zip" download="ArchaeoPhD-Windows.zip" style="text-decoration: underline; color: inherit;">Portable Package (.zip)</a>
-          <span>&middot;</span>
-          <a href="downloads/checksums.sha256" target="_blank" style="text-decoration: underline; color: inherit;">SHA-256 Hashes</a>
         </div>
       </div>
     </section>
@@ -626,7 +1204,6 @@
           <div class="sticky-cta-sub">Windows 10/11 · 1-Click Setup · 100% On-Device Offline AI Workstation</div>
         </div>
         <div class="sticky-cta-actions">
-          <a href="#interactive-lab" class="btn btn-secondary btn-sm" id="sticky-btn-demo">Explore Demo</a>
           <a href="downloads/ArchaeoPhD-Setup.exe" download="ArchaeoPhD-Setup.exe" class="btn btn-primary btn-sm" id="sticky-btn-download">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
             Download for Windows
@@ -642,22 +1219,26 @@
        ========================================================================= -->
   <footer class="footer">
     <div class="container">
-      <a href="#hero" class="nav-brand">
-        <span class="nav-brand-plaque">
-          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
-            <path d="M12 3.2 L18.8 20.6 H5.2 Z" fill="#94462A" />
-            <path d="M12 8.4 L14.5 14.2 H9.5 Z" fill="#F5F0E6" />
-            <rect x="7" y="16.4" width="10" height="1.1" fill="#F5F0E6" />
-            <rect x="6.2" y="18.4" width="11.6" height="0.9" fill="#F5F0E6" opacity="0.7" />
-            <circle cx="12" cy="3.2" r="1.9" fill="#C89B3C" />
-          </svg>
-        </span>
-        <span class="nav-brand-text">ArchaeoPhD</span>
-      </a>
-      <p class="footer-copy">&copy; 2026 ArchaeoPhD &middot; An AI research workspace for archaeology. 100% On-Device Privacy.</p>
+      <div class="footer-brand-wrap">
+        <a href="/" class="nav-brand">
+          <span class="nav-brand-plaque">
+            <img src="/app-logo-mark.png" alt="ArchaeoPhD Logo" width="36" height="36" class="nav-brand-logo-img">
+          </span>
+          <span class="nav-brand-text">ArchaeoPhD</span>
+        </a>
+        <p class="footer-copy">&copy; 2026 ArchaeoPhD &middot; An AI research workspace for archaeology. 100% On-Device Privacy.</p>
+      </div>
+
+      <div class="footer-support">
+        <span class="footer-support-label">Support &amp; Team Inquiries:</span>
+        <a href="mailto:archaeophdai@gmail.com" class="footer-support-link">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          archaeophdai@gmail.com
+        </a>
+      </div>
     </div>
   </footer>
 
-  <script src="app.js"></script>
+  <script src="app.js?v=2"></script>
 </body>
 </html>

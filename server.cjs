@@ -20,9 +20,18 @@ const MIME = {
   '.gguf': 'application/octet-stream'
 };
 
+const CLEAN_SECTION_ROUTES = new Set([
+  '/problem', '/how', '/graph', '/interactive-lab', '/ai', '/sites',
+  '/chronology', '/thesis', '/voice', '/collaboration', '/pricing',
+  '/faq', '/downloads', '/security', '/about'
+]);
+
 const server = http.createServer((req, res) => {
   let reqPath = decodeURI(req.url.split('?')[0]);
-  if (reqPath === '/') reqPath = '/index.html';
+  if (reqPath === '' || reqPath === '/') reqPath = '/index.html';
+  if (CLEAN_SECTION_ROUTES.has(reqPath)) reqPath = '/index.html';
+  if (reqPath === '/blog' || reqPath === '/blog/') reqPath = '/blog/index.html';
+  if (reqPath.startsWith('/blog/') && !path.extname(reqPath)) reqPath = '/blog/index.html';
   
   let filePath;
   if (reqPath.startsWith('/models/')) {
@@ -51,6 +60,9 @@ const server = http.createServer((req, res) => {
     if (isDownload) {
       headers['Content-Disposition'] = `attachment; filename="${filename}"`;
       headers['Cache-Control'] = 'no-store, no-cache, must-revalidate';
+    } else {
+      // In local dev, prevent aggressive caching of CSS/JS/HTML so live edits are reflected immediately
+      headers['Cache-Control'] = 'no-cache, must-revalidate';
     }
 
     res.writeHead(200, headers);
