@@ -1,12 +1,11 @@
 {
-  "cleanUrls": true,
   "rewrites": [
     {
-      "source": "/blog/(.*)",
+      "source": "/blog/:path*",
       "destination": "/blog/index.html"
     },
     {
-      "source": "/(problem|how|graph|interactive-lab|ai|sites|chronology|thesis|voice|collaboration|pricing|faq|downloads|security|about)",
+      "source": "/:path*",
       "destination": "/index.html"
     }
   ]
