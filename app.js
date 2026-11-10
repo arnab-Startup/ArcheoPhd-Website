@@ -23,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initCopyButtons();
   initStickyCta();
   initCleanNavigation();
+  initVersionReleases();
 });
 
 // --------------------------------------------------------------------------
@@ -472,4 +473,48 @@ function initCleanNavigation() {
     }
   });
 }
+
+// --------------------------------------------------------------------------
+// 12. Version Releases & Changelog Accordion
+// --------------------------------------------------------------------------
+function initVersionReleases() {
+  const toggleBtns = document.querySelectorAll('.toggle-changelog-btn');
+  toggleBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      const targetId = btn.getAttribute('data-target');
+      if (!targetId) return;
+      const drawer = document.getElementById(targetId);
+      if (!drawer) return;
+
+      const isHidden = drawer.style.display === 'none' || getComputedStyle(drawer).display === 'none';
+      if (isHidden) {
+        drawer.style.display = 'block';
+        btn.textContent = 'Hide Changelog';
+      } else {
+        drawer.style.display = 'none';
+        btn.textContent = 'Changelog';
+      }
+    });
+  });
+
+  const filterBtns = document.querySelectorAll('.version-tab-btn');
+  const versionItems = document.querySelectorAll('.version-item');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const filter = btn.getAttribute('data-vfilter');
+      versionItems.forEach(item => {
+        const channel = item.getAttribute('data-vchannel');
+        if (filter === 'all' || channel === filter) {
+          item.style.display = '';
+        } else {
+          item.style.display = 'none';
+        }
+      });
+    });
+  });
+}
+
 
