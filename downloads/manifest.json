@@ -7,6 +7,9 @@
   "build_date": "2026-11-10",
   "author": "ArchaeoPhD Core Team",
   "license": "Academic Proprietary - Evaluation Build",
+  "update_scope_default": "app_only",
+  "includes_model_update": false,
+  "model_update_policy": "Decoupled Architecture: Routine software updates NEVER re-download model weights (10 MB app-only download). Existing 4.5 GB neural weights in Zone 3 are preserved permanently unless a breakthrough fine-tune is explicitly flagged.",
   "durability_invariant": "100% Zero-Data-Loss In-Place Update. User research files, PDFs, thesis chapters, and chat dialogues in Zone 2 Research Vault are never modified or purged.",
   "binaries": {
     "installer": {
