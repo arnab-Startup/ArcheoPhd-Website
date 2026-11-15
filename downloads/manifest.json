@@ -23,9 +23,9 @@
     },
     "standalone": {
       "filename": "ArchaeoPhD.exe",
-      "size_bytes": 11325440,
+      "size_bytes": 11328000,
       "size_human": "10.80 MB",
-      "sha256": "2ac63261c91db0cb38ea88182a321d59d00c0b54e76e3fe52dc2d7e6e9bec44a",
+      "sha256": "11a2a1e901e38316328f8c5b1e5605f3eedc76f8f2f032e4dffd92a22c56d865",
       "architecture": "x86_64"
     },
     "runtime_dependencies": [
@@ -64,7 +64,7 @@
         "Resilient multi-layer client router with explicit workspace action dispatches"
       ],
       "size_human": "10.80 MB (Standalone)",
-      "sha256": "2ac63261c91db0cb38ea88182a321d59d00c0b54e76e3fe52dc2d7e6e9bec44a",
+      "sha256": "11a2a1e901e38316328f8c5b1e5605f3eedc76f8f2f032e4dffd92a22c56d865",
       "download_filename": "ArchaeoPhD.exe",
       "download_url": "downloads/ArchaeoPhD.exe",
       "minimum_os": "Windows 10 / 11 (64-bit)"
