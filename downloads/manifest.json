@@ -1,10 +1,10 @@
 {
   "$schema": "https://schema.archaeophd.org/distribution-manifest-v1.json",
   "app_name": "ArchaeoPhD Desktop",
-  "version": "1.0.0",
+  "version": "1.2.1",
   "release_channel": "stable",
   "target_os": "windows-x86_64",
-  "build_date": "2026-11-03",
+  "build_date": "2026-11-15",
   "author": "ArchaeoPhD Core Team",
   "license": "Academic Proprietary - Evaluation Build",
   "update_scope_default": "app_only",
@@ -23,9 +23,9 @@
     },
     "standalone": {
       "filename": "ArchaeoPhD.exe",
-      "size_bytes": 11182592,
-      "size_human": "10.66 MB",
-      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 11325440,
+      "size_human": "10.80 MB",
+      "sha256": "2ac63261c91db0cb38ea88182a321d59d00c0b54e76e3fe52dc2d7e6e9bec44a",
       "architecture": "x86_64"
     },
     "runtime_dependencies": [
@@ -51,10 +51,29 @@
   },
   "version_history": [
     {
+      "version": "1.2.1",
+      "release_date": "2026-11-15",
+      "release_channel": "stable",
+      "is_latest": true,
+      "title": "Archaeological Workspace Decoupling & Bengal Dataset Integration",
+      "highlights": [
+        "Archaeological Project Workspace decoupled from researcher personal profile with scoped domain views",
+        "Chandraketugarh Bengal early historic excavation dataset & 7-period Harris matrix chronology",
+        "Fixed runtime bulkCreate database interface preventing batch ingestion crashes",
+        "Strict project data scoping eliminating cross-workspace entity leakage",
+        "Resilient multi-layer client router with explicit workspace action dispatches"
+      ],
+      "size_human": "10.80 MB (Standalone)",
+      "sha256": "2ac63261c91db0cb38ea88182a321d59d00c0b54e76e3fe52dc2d7e6e9bec44a",
+      "download_filename": "ArchaeoPhD.exe",
+      "download_url": "downloads/ArchaeoPhD.exe",
+      "minimum_os": "Windows 10 / 11 (64-bit)"
+    },
+    {
       "version": "1.0.0",
       "release_date": "2026-11-03",
       "release_channel": "stable",
-      "is_latest": true,
+      "is_latest": false,
       "title": "ArchaeoPhD Desktop — Initial Doctoral Research Workstation",
       "highlights": [
         "Air-gapped 100% offline standalone workstation (Zero open network sockets, zero telemetry)",
