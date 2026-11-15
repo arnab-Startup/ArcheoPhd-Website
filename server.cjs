@@ -23,7 +23,7 @@ const MIME = {
 const CLEAN_SECTION_ROUTES = new Set([
   '/problem', '/how', '/graph', '/interactive-lab', '/ai', '/sites',
   '/chronology', '/thesis', '/voice', '/collaboration', '/pricing',
-  '/faq', '/downloads', '/security', '/about'
+  '/faq', '/downloads', '/security', '/about', '/releases'
 ]);
 
 const server = http.createServer((req, res) => {
