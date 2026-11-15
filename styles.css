@@ -2047,6 +2047,24 @@ a {
   color: var(--foreground);
 }
 
+details.checksum-details {
+  border-top: 1px dashed var(--border);
+  padding-top: 0.875rem;
+  margin-top: 1rem;
+}
+
+details.checksum-details summary {
+  cursor: pointer;
+  font-size: 0.8125rem;
+  color: var(--muted-foreground);
+  transition: color 0.15s ease;
+  user-select: none;
+}
+
+details.checksum-details summary:hover {
+  color: var(--foreground);
+}
+
 .checksum-box {
   display: flex;
   flex-wrap: wrap;
